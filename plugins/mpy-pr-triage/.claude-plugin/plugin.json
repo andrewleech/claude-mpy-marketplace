@@ -1,0 +1,9 @@
+{
+  "name": "mpy-pr-triage",
+  "version": "0.1.0",
+  "description": "List, sort, and triage open MicroPython PRs with branch and worktree status",
+  "author": {
+    "name": "andrewleech"
+  },
+  "keywords": ["micropython", "github", "pr-triage", "worktree"]
+}

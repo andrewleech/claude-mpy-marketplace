@@ -1,0 +1,18 @@
+{
+  "name": "mpy-marketplace",
+  "version": "0.1.0",
+  "owner": {
+    "name": "andrewleech"
+  },
+  "description": "Claude Code plugins for MicroPython development workflows",
+  "plugins": [
+    {
+      "name": "mpy-pr-triage",
+      "source": "./plugins/mpy-pr-triage",
+      "version": "0.1.0",
+      "description": "List, sort, and triage open MicroPython PRs with branch and worktree status",
+      "category": "productivity",
+      "tags": ["micropython", "github", "pr-triage"]
+    }
+  ]
+}
