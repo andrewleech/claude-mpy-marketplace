@@ -1,5 +1,5 @@
 ---
-name: pr-triage
+name: mpy-pr-triage
 description: List and sort open MicroPython PRs with branch/worktree status
 argument-hint: "[feedback|newest|oldest]"
 allowed-tools: ["Bash", "Read"]

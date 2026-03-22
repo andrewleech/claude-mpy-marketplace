@@ -15,10 +15,11 @@ if [ ! -f "$SETTINGS_FILE" ]; then
 fi
 
 python3 -c "
-import json
+import json, os
 
 settings_path = '$SETTINGS_FILE'
 marketplace_name = '$MARKETPLACE_NAME'
+installed_path = os.path.join(os.path.dirname(settings_path), 'plugins', 'installed_plugins.json')
 
 with open(settings_path) as f:
     settings = json.load(f)
@@ -41,6 +42,18 @@ for k in to_remove:
 with open(settings_path, 'w') as f:
     json.dump(settings, f, indent=2)
     f.write('\n')
+
+# Remove from installed_plugins.json
+if os.path.exists(installed_path):
+    with open(installed_path) as f:
+        installed = json.load(f)
+    to_remove = [k for k in installed.get('plugins', {}) if k.endswith(f'@{marketplace_name}')]
+    for k in to_remove:
+        del installed['plugins'][k]
+        print(f'Removed install entry: {k}')
+    with open(installed_path, 'w') as f:
+        json.dump(installed, f, indent=2)
+        f.write('\n')
 "
 
 echo ""

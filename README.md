@@ -26,7 +26,7 @@ Restart Claude Code after installation. Edits to plugin files take effect on nex
 
 List, sort, and triage open MicroPython PRs with branch and worktree status.
 
-**Slash command:** `/pr-triage [feedback|newest|oldest]`
+**Slash command:** `/mpy-pr-triage [feedback|newest|oldest]`
 
 **Skill trigger:** Ask about open PRs, PR triage, which PRs need attention, etc.
 
