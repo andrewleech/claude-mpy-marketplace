@@ -1,0 +1,9 @@
+{
+  "name": "mpy-ci",
+  "version": "0.1.0",
+  "description": "Run the MicroPython CI pipeline locally using Docker",
+  "author": {
+    "name": "andrewleech"
+  },
+  "keywords": ["micropython", "ci", "docker", "testing", "build"]
+}

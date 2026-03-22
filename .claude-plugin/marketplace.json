@@ -13,6 +13,14 @@
       "description": "List, sort, and triage open MicroPython PRs with branch and worktree status",
       "category": "productivity",
       "tags": ["micropython", "github", "pr-triage"]
+    },
+    {
+      "name": "mpy-ci",
+      "source": "./plugins/mpy-ci",
+      "version": "0.1.0",
+      "description": "Run the MicroPython CI pipeline locally using Docker",
+      "category": "development",
+      "tags": ["micropython", "ci", "docker", "testing"]
     }
   ]
 }

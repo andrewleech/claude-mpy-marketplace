@@ -30,6 +30,14 @@ List, sort, and triage open MicroPython PRs with branch and worktree status.
 
 **Skill trigger:** Ask about open PRs, PR triage, which PRs need attention, etc.
 
+### mpy-ci
+
+Run the MicroPython CI pipeline locally in Docker. Covers all 18 port build/test targets and 8 code quality checks.
+
+**Skill trigger:** Ask to run CI, test changes, build firmware, run linters, etc.
+
+See [plugins/mpy-ci/README.md](plugins/mpy-ci/README.md) for target list and usage.
+
 ## Adding New Plugins
 
 1. Create `plugins/<name>/.claude-plugin/plugin.json`
