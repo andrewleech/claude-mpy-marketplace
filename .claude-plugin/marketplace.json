@@ -21,6 +21,14 @@
       "description": "Run the MicroPython CI pipeline locally using Docker",
       "category": "development",
       "tags": ["micropython", "ci", "docker", "testing"]
+    },
+    {
+      "name": "mpy-rules",
+      "source": "./plugins/mpy-rules",
+      "version": "0.1.0",
+      "description": "MicroPython project rules -- automatically loads build, style, PR, and architecture guidelines into .claude/rules/ for any MicroPython repo",
+      "category": "development",
+      "tags": ["micropython", "rules", "project-config"]
     }
   ]
 }
