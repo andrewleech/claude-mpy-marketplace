@@ -92,7 +92,9 @@ with open(settings_path, 'w') as f:
     json.dump(settings, f, indent=2)
     f.write('\n')
 
-# Register in installed_plugins.json (linked, not cached)
+# Create cache symlinks and register in installed_plugins.json
+cache_base = os.path.join(os.path.dirname(settings_path), 'plugins', 'cache', marketplace_name)
+
 if os.path.exists(installed_path):
     with open(installed_path) as f:
         installed = json.load(f)
@@ -102,18 +104,30 @@ else:
 now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
 for plugin in mkt.get('plugins', []):
     key = f'{plugin[\"name\"]}@{marketplace_name}'
+    version = plugin.get('version', '0.1.0')
     source_path = os.path.normpath(os.path.join(marketplace_dir, plugin['source']))
+    cache_dir = os.path.join(cache_base, plugin['name'], version)
+    os.makedirs(cache_dir, exist_ok=True)
+
+    # Symlink plugin contents into cache
+    for item in os.listdir(source_path):
+        link = os.path.join(cache_dir, item)
+        target = os.path.join(source_path, item)
+        if os.path.islink(link):
+            os.remove(link)
+        if not os.path.exists(link):
+            os.symlink(target, link)
+
     entry = {
         'scope': 'user',
-        'installPath': source_path,
-        'version': plugin.get('version', '0.1.0'),
+        'installPath': cache_dir,
+        'version': version,
         'installedAt': now,
         'lastUpdated': now,
     }
     if key in installed['plugins']:
-        # Update path and version in case they changed
-        installed['plugins'][key][0]['installPath'] = source_path
-        installed['plugins'][key][0]['version'] = plugin.get('version', '0.1.0')
+        installed['plugins'][key][0]['installPath'] = cache_dir
+        installed['plugins'][key][0]['version'] = version
         installed['plugins'][key][0]['lastUpdated'] = now
         print(f'Updated install entry: {key}')
     else:
