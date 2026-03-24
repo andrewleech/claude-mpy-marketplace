@@ -29,6 +29,14 @@
       "description": "MicroPython project rules -- automatically loads build, style, PR, and architecture guidelines into .claude/rules/ for any MicroPython repo",
       "category": "development",
       "tags": ["micropython", "rules", "project-config"]
+    },
+    {
+      "name": "mpy-pr-maintenance",
+      "source": "./plugins/mpy-pr-maintenance",
+      "version": "0.1.0",
+      "description": "Systematic maintenance workflow for open MicroPython PRs: recon, rebase, CI, push",
+      "category": "productivity",
+      "tags": ["micropython", "github", "pr-maintenance", "rebase", "worktree"]
     }
   ]
 }

@@ -38,6 +38,14 @@ Run the MicroPython CI pipeline locally in Docker. Covers all 18 port build/test
 
 See [plugins/mpy-ci/README.md](plugins/mpy-ci/README.md) for target list and usage.
 
+### mpy-pr-maintenance
+
+Systematic workflow for maintaining open MicroPython PRs. Processes PRs oldest to newest through reconnaissance, user discussion, rebase/fix in worktree subprocesses, local CI validation, and force-push. Supports batch processing of PRs without reviewer feedback.
+
+**Skill trigger:** Ask about PR maintenance, PR backlog, rebasing PRs, working through open PRs.
+
+**Depends on:** mpy-pr-triage, mpy-ci
+
 ## Adding New Plugins
 
 1. Create `plugins/<name>/.claude-plugin/plugin.json`

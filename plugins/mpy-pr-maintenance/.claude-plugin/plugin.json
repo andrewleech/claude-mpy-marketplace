@@ -1,0 +1,9 @@
+{
+  "name": "mpy-pr-maintenance",
+  "version": "0.1.0",
+  "description": "Systematic maintenance workflow for open MicroPython PRs: recon, rebase, CI, push",
+  "author": {
+    "name": "andrewleech"
+  },
+  "keywords": ["micropython", "github", "pr-maintenance", "rebase", "worktree", "ci"]
+}
