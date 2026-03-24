@@ -134,3 +134,31 @@ Report what commits you created and the build result.
 - Set `<PRIMARY_PORT>` based on the files changed in the PR. If the PR touches `ports/stm32/`, use `stm32`. If it touches core (`py/`, `extmod/`), use `unix`.
 - For PRs touching multiple ports, pick the most affected port for the subprocess build test. Full CI runs in Phase 4 after the subprocess completes.
 - The subprocess has no access to the parent Claude session's context. Everything it needs must be in the prompt.
+
+## Phase 4: Full Local CI (run by parent session, NOT the subprocess)
+
+After the subprocess completes, the parent session must run the full local CI suite
+before pushing. The subprocess only runs a basic build test — this phase runs the
+complete set of relevant targets.
+
+```bash
+cd ~/mpy/<BRANCH> && ./ci/ci-local.sh format codespell ruff <RELEVANT_TARGETS> 2>&1 | tee /tmp/ci-pr-<NUMBER>.log
+```
+
+CI target selection from changed file paths:
+
+| Changed path | Targets |
+|---|---|
+| `py/**`, `extmod/**`, `shared/**`, `lib/**`, `drivers/**` | `unix stm32` |
+| `ports/<port>/**` | that port's target |
+| `tests/**` | `unix` |
+| `docs/**` | `docs` |
+| `tools/mpremote/**` | `mpremote` |
+| `mpy-cross/**` | `unix mpy-format` |
+| `examples/**` | `examples` |
+
+Always include: `format codespell ruff`
+
+Do NOT push until local CI passes. Review any failures — if they are pre-existing
+flaky tests (thread/stress_schedule.py, misc/sys_settrace_features.py), proceed.
+If they are real failures, fix before pushing.

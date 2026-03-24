@@ -200,13 +200,17 @@ Always include: `format`, `codespell`, `ruff`.
 
 Deduplicate the target list.
 
-### Run CI in background
+### Run local CI (MANDATORY before push)
 
 ```bash
-cd ~/mpy/<BRANCH> && ./ci/ci-local.sh format codespell ruff <PORT_TARGETS> 2>&1 | tee /tmp/ci-pr-<NUMBER>.log &
+cd ~/mpy/<BRANCH> && ./ci/ci-local.sh format codespell ruff <PORT_TARGETS> 2>&1 | tee /tmp/ci-pr-<NUMBER>.log
 ```
 
-Run CI in the background so the next PR can be processed in parallel. Record the background job PID for later checking.
+**This step is mandatory.** Do not push until local CI passes. The subprocess in Phase 3
+only runs a basic build test — this phase runs the full relevant CI suite.
+
+Run in the background to allow parallel processing of the next PR's recon/discussion,
+but block the push (Phase 5) until results are available.
 
 ### Known flaky tests
 
@@ -216,7 +220,7 @@ These tests fail intermittently and should not block a push:
 
 ## Phase 5: Push
 
-After CI passes (check the background job):
+**Only after local CI passes** (check the background job results):
 
 ```bash
 cd ~/mpy/<BRANCH> && git push origin <BRANCH> --force-with-lease
