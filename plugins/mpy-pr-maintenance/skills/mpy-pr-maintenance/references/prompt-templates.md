@@ -142,7 +142,10 @@ before pushing. The subprocess only runs a basic build test — this phase runs 
 complete set of relevant targets.
 
 ```bash
-cd ~/mpy/<BRANCH> && ./ci/ci-local.sh format codespell ruff <RELEVANT_TARGETS> 2>&1 | tee /tmp/ci-pr-<NUMBER>.log
+# Clean stale build objects first (worktrees accumulate objects from previous runs)
+cd ~/mpy/<BRANCH> && rm -rf ports/*/build-* mpy-cross/build
+# Then run CI
+./ci/ci-local.sh format codespell ruff <RELEVANT_TARGETS> 2>&1 | tee /tmp/ci-pr-<NUMBER>.log
 ```
 
 CI target selection from changed file paths:
