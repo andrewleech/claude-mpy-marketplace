@@ -51,6 +51,16 @@ paths:
    - Static modules in `mpconfigport.h` via `MICROPY_PORT_BUILTIN_MODULES`
    - Dynamic modules via `MP_REGISTER_MODULE`
 
+## Resource Constraints
+
+MicroPython targets microcontrollers with limited flash and RAM. The CI system automatically reports flash size and RAM usage changes on every PR, and reviewers scrutinise any increase. When planning or implementing changes:
+
+* Minimise flash usage -- avoid large lookup tables, verbose strings, or unnecessary code paths. Prefer compact representations.
+* Minimise RAM usage -- use `const` data where possible so it stays in flash, avoid heap allocations in hot paths, prefer stack-local variables.
+* New features that increase code size must justify the trade-off. Small utility functions shared across ports are generally acceptable; large features should be gated behind config flags (e.g. `MICROPY_PY_*`).
+* When a feature can be made optional via a config flag, do so. Default it to off for minimal ports and on for full-featured ports.
+* Measure before and after: build the `unix` and `stm32` ports and compare `.text` / `.data` / `.bss` sizes. The CI does this automatically but catching regressions locally saves review cycles.
+
 ## Common Development Tasks
 
 ### Adding a New Built-in Function

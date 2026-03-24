@@ -4,36 +4,58 @@
 # MicroPython PR Workflow
 
 ## PR Description Guidelines
-* The title should focus on the end user effect of the change.
+
+### Style
+* The title should focus on the end user effect of the change, prefixed with the component: `stm32: Add DMA support for SPI.`
 * All PR/MR descriptions should be written succinctly with a casual / personal writing style with minimal extra sub-headings if any.
 * Do NOT list commits or provide checklists of things done/not-done.
 * Provide only brief detail and background, we can assume everyone reading this is already a micropython expert.
 * Use regular dashes (-), not em dashes.
 * Do not hard-wrap paragraphs; let the renderer handle line wrapping.
-* When writing PR/MR descriptions use the template:
+
+### Template
+
+Before writing a PR description, verify the template below still matches the upstream PR template at:
+`micropython/.github/pull_request_template.md`
+(or fetch it with `gh api repos/micropython/micropython/contents/.github/pull_request_template.md --jq '.content' | base64 -d`)
+
+If the upstream template has changed, flag this to the user before proceeding.
+
+Use this template for PR descriptions:
+
 ``` markdown
 ### Summary
-<!-- The summary should open with the user-facing feature added or problem
-     being addressed, in normal English. Technical details of the
-     implementation / fix can come later though keep in mind the code can
-     speak for itself in many cases.
--->
+
+<!-- Explain the reason for making this change. What problem does the pull request
+     solve, or what improvement does it add? Add links if relevant,
+     especially links to open issues. -->
 
 ### Testing
+
 <!-- Explain what testing you did, and on which boards/ports. If there are
      boards or ports that you couldn't test, please mention this here as well.
-     If you leave this empty then your Pull Request may be closed. -->
+
+     If you leave this section empty then your Pull Request may be closed. -->
 
 ### Trade-offs and Alternatives
+
 <!-- If the Pull Request has some negative impact (i.e. increased code size)
      then please explain why you think the trade-off improvement is worth it.
      If you can think of alternative ways to do this, please explain that here too.
+
      Delete this heading if not relevant (i.e. small fixes) -->
 
 ### Generative AI
 
-I used generative AI tools when creating this PR, but a human has checked the code and is responsible for the description above.
+I used generative AI tools when creating this PR, but a human has checked the
+code and is responsible for the code and the description above.
 ```
+
+Notes on filling in the template:
+* **Summary** should open with the user-facing feature or problem in plain English. Technical implementation detail can follow but keep it brief -- the code speaks for itself.
+* **Testing** must not be left empty or the PR may be closed. Name specific boards/ports tested and mention any that were not tested.
+* **Trade-offs** -- delete this section entirely for small fixes. Only include it when there's a genuine trade-off to explain.
+* **Generative AI** -- keep the single applicable statement. Delete the one that doesn't apply. The upstream template provides two options; we always use the "I used generative AI" one.
 
 ## GitHub PR Guidelines
 * The upstream repo https://github.com/micropython/micropython should always be used for PR's.

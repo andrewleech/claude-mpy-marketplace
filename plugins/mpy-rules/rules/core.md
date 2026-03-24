@@ -115,21 +115,29 @@ pre-commit run --files [files...]
 pre-commit install --hook-type pre-commit --hook-type commit-msg
 ```
 
-**Commit message format:**
-```
-component/subcomponent: Brief description ending with period.
+**Commit message format (enforced by `tools/verifygitlog.py` via pre-commit):**
 
-Detailed explanation if needed, wrapped at 75 characters.
+Subject line rules:
+* Must match: `component: Capitalised description ending with period.`
+* Regex: `^[^!]+: [A-Z]+.+ .+\.$`
+* Maximum 72 characters
+* First word after the colon must be capitalised
+* Must contain more than one word after the colon
+* Component prefix must not start with `.` or `/`, must not end with `/`
+* Component prefix must not start with `ports/` -- use the port name directly (e.g. `stm32:` not `ports/stm32:`)
+* Component prefix must not end with a file extension -- use the filename without extension
 
-Signed-off-by: Your Name <your.email@example.com>
-```
+Body rules:
+* Second line must be blank (separates subject from body)
+* Body lines must be 75 characters or fewer (URLs and `Signed-off-by:`/`Co-authored-by:` lines are exempt)
+* Last line must be `Signed-off-by:` with an email address (use `git commit -s`)
+* Keep descriptions terse -- one or two sentences is usually enough. The diff provides the detail.
 
 Example:
 ```
 py/objstr: Add splitlines() method.
 
-This implements the splitlines() method for str objects, compatible
-with CPython behavior.
+Implements splitlines() for str objects, compatible with CPython.
 
 Signed-off-by: Developer Name <dev@example.com>
 ```
