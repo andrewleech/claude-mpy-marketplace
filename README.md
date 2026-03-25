@@ -5,20 +5,30 @@ Claude Code plugins for MicroPython development workflows.
 ## Installation
 
 ```bash
+claude plugin add https://github.com/andrewleech/claude-mpy-marketplace
+```
+
+Restart Claude Code after installation.
+
+## Developer Installation
+
+For local development with live source updates:
+
+```bash
+git clone https://github.com/andrewleech/claude-mpy-marketplace.git
+cd claude-mpy-marketplace
+
 # Register marketplace and enable all plugins
 ./install.sh --enable-all
 
 # Or just register (enable plugins individually later)
 ./install.sh
-```
 
-Restart Claude Code after installation. Edits to plugin files take effect on next session -- no reinstall needed.
-
-## Uninstall
-
-```bash
+# Uninstall
 ./uninstall.sh
 ```
+
+Edits to plugin files take effect on next session -- no reinstall needed.
 
 ## Plugins
 
