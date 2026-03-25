@@ -11,7 +11,8 @@
 #   nrf  powerpc  renesas  samd  alif  webassembly  windows  zephyr
 #
 # Targets (checks):
-#   format  codespell  ruff  biome  docs  examples  mpy-format  mpremote
+#   commit-format  format  codespell  ruff  biome  docs  examples  mpy-format
+#   mpremote
 #
 # Meta targets:
 #   all  all-checks
@@ -286,6 +287,14 @@ run_format() {
     run_in_container "ci_c_code_formatting_run"
 }
 
+run_commit_format() {
+    echo "==> commit-format"
+    run_in_container "
+        MERGE_BASE=\$(git merge-base upstream/master HEAD) &&
+        tools/verifygitlog.py -v \${MERGE_BASE}..HEAD
+    "
+}
+
 run_codespell() {
     echo "==> codespell"
     run_in_container "
@@ -337,6 +346,7 @@ run_mpremote() {
 }
 
 run_all_checks() {
+    run_commit_format
     run_format
     run_codespell
     run_ruff
@@ -407,6 +417,7 @@ for target in "${TARGETS[@]}"; do
         windows)      run_windows ;;
         zephyr)       run_zephyr ;;
         format)       run_format ;;
+        commit-format) run_commit_format ;;
         codespell)    run_codespell ;;
         ruff)         run_ruff ;;
         biome)        run_biome ;;

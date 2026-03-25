@@ -15,9 +15,9 @@ Steps:
 3. If there are conflicts, resolve them. The intent of this branch is: <PR_TITLE_AND_DESCRIPTION>
 4. After rebase, run: git diff --check HEAD~<N_COMMITS>..HEAD  (to check for whitespace errors)
 5. Run the code formatters: ./ci/ci-local.sh format
-6. If formatting changed any files, amend the relevant commits with: git add -u && git commit --amend --no-edit
+6. If formatting changed any files, amend the relevant commits with: git add -u && git commit --amend --no-edit -s
 7. Verify no stale submodule pointers: git diff upstream/master -- lib/
-   If lib/ has changes, drop them: git checkout upstream/master -- lib/ && git commit --amend --no-edit
+   If lib/ has changes, drop them: git checkout upstream/master -- lib/ && git commit --amend --no-edit -s
 8. Run a quick build test: ./ci/ci-local.sh <PRIMARY_PORT>
 
 Report what you did and whether the build succeeded.
@@ -46,9 +46,9 @@ Steps:
    - Make the requested code changes
    - If a reviewer suggestion is unclear or conflicts with the PR's purpose, document your reasoning in a comment at the top of the relevant function
 6. Run: ./ci/ci-local.sh format
-7. If formatting changed files, stage and amend: git add -u && git commit --amend --no-edit
+7. If formatting changed files, stage and amend: git add -u && git commit --amend --no-edit -s
 8. Verify no stale submodule pointers: git diff upstream/master -- lib/
-   If lib/ has changes, drop them: git checkout upstream/master -- lib/ && git commit --amend --no-edit
+   If lib/ has changes, drop them: git checkout upstream/master -- lib/ && git commit --amend --no-edit -s
 9. Run: ./ci/ci-local.sh <PRIMARY_PORT>
 
 Report:
@@ -130,10 +130,12 @@ Report what commits you created and the build result.
 
 ## Prompt Construction Notes
 
+- **All commits MUST include sign-off** (`git commit -s`). MicroPython CI checks for `Signed-off-by:` on every commit. Without it, the `commit-format` check fails. When amending: `git commit --amend -s`.
 - Always include the full reviewer feedback text, not a summary. The subprocess cannot access GitHub.
 - Set `<PRIMARY_PORT>` based on the files changed in the PR. If the PR touches `ports/stm32/`, use `stm32`. If it touches core (`py/`, `extmod/`), use `unix`.
 - For PRs touching multiple ports, pick the most affected port for the subprocess build test. Full CI runs in Phase 4 after the subprocess completes.
 - The subprocess has no access to the parent Claude session's context. Everything it needs must be in the prompt.
+- Keep commit messages succinct: `component: Brief description.` on a single line. No multi-line bodies unless genuinely needed.
 
 ## Phase 4: Full Local CI (run by parent session, NOT the subprocess)
 

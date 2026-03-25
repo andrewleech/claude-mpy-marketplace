@@ -75,6 +75,7 @@ To install the CI runner into a MicroPython repo:
 
 | Target | Description |
 |--------|-------------|
+| `commit-format` | Commit message formatting and sign-off (verifygitlog.py) |
 | `format` | C code formatting (uncrustify) |
 | `codespell` | Spell checking |
 | `ruff` | Python linting and formatting |
