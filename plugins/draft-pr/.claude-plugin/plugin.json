@@ -1,0 +1,9 @@
+{
+  "name": "draft-pr",
+  "version": "0.1.0",
+  "description": "Draft GitHub PR and GitLab MR titles and descriptions from git branch changes",
+  "author": {
+    "name": "andrewleech"
+  },
+  "keywords": ["github", "gitlab", "pull-request", "merge-request", "pr", "mr"]
+}

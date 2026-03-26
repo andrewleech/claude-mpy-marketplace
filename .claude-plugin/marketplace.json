@@ -25,8 +25,8 @@
     {
       "name": "mpy-rules",
       "source": "./plugins/mpy-rules",
-      "version": "0.2.0",
-      "description": "MicroPython project rules -- automatically loads build, style, PR, and architecture guidelines into .claude/rules/ for any MicroPython repo",
+      "version": "0.3.0",
+      "description": "MicroPython project rules -- automatically loads build, style, PR, architecture, and review pattern guidelines into .claude/rules/ for any MicroPython repo",
       "category": "development",
       "tags": ["micropython", "rules", "project-config"]
     },
@@ -37,6 +37,14 @@
       "description": "Systematic maintenance workflow for open MicroPython PRs: recon, rebase, CI, push",
       "category": "productivity",
       "tags": ["micropython", "github", "pr-maintenance", "rebase", "worktree"]
+    },
+    {
+      "name": "draft-pr",
+      "source": "./plugins/draft-pr",
+      "version": "0.1.0",
+      "description": "Draft GitHub PR and GitLab MR titles and descriptions from git branch changes",
+      "category": "productivity",
+      "tags": ["github", "gitlab", "pull-request", "merge-request"]
     },
     {
       "name": "mpy-reviewer",
