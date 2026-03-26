@@ -49,6 +49,18 @@
       "description": "MicroPython code review assistant backed by categorized review comments from upstream",
       "category": "development",
       "tags": ["micropython", "code-review", "rag"]
+    },
+    {
+      "name": "mpy-triage",
+      "source": {
+        "source": "github",
+        "repo": "andrewleech/mpy-triage",
+        "ref": "main"
+      },
+      "version": "0.1.0",
+      "description": "MicroPython issue/PR triage - duplicate and related item detection",
+      "category": "productivity",
+      "tags": ["micropython", "triage", "duplicate-detection"]
     }
   ]
 }
