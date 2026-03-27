@@ -1,7 +1,7 @@
 {
   "name": "mpy-rules",
-  "version": "0.2.0",
-  "description": "MicroPython project rules -- automatically loads build, style, PR, and architecture guidelines into .claude/rules/ for any MicroPython repo",
+  "version": "0.3.0",
+  "description": "MicroPython project rules -- automatically loads build, style, PR, architecture, and review pattern guidelines into .claude/rules/ for any MicroPython repo",
   "author": {
     "name": "andrewleech"
   },
