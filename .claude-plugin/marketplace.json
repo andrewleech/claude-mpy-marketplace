@@ -25,8 +25,8 @@
     {
       "name": "mpy-rules",
       "source": "./plugins/mpy-rules",
-      "version": "0.3.0",
-      "description": "MicroPython project rules -- automatically loads build, style, PR, architecture, and review pattern guidelines into .claude/rules/ for any MicroPython repo",
+      "version": "0.4.0",
+      "description": "MicroPython project rules, multi-agent review skill, and documentation style guide for any MicroPython repo",
       "category": "development",
       "tags": ["micropython", "rules", "project-config"]
     },
@@ -45,18 +45,6 @@
       "description": "Draft GitHub PR and GitLab MR titles and descriptions from git branch changes",
       "category": "productivity",
       "tags": ["github", "gitlab", "pull-request", "merge-request"]
-    },
-    {
-      "name": "mpy-reviewer",
-      "source": {
-        "source": "github",
-        "repo": "andrewleech/mpy-reviewer",
-        "ref": "main"
-      },
-      "version": "0.2.0",
-      "description": "MicroPython code review assistant backed by categorized review comments from upstream",
-      "category": "development",
-      "tags": ["micropython", "code-review", "rag"]
     }
   ]
 }
