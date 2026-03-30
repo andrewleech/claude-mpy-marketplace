@@ -69,7 +69,29 @@ if [ "$linked" -gt 0 ]; then
     echo "Linked $linked rule file(s) into .claude/rules/"
 fi
 
-# --- Step 3: Ensure .claude/ is locally gitignored ---
+# --- Step 3: Install pre-push hook if not present ---
+
+# The pre-push hook catches issues that pre-commit misses (e.g. during rebase,
+# where git cherry-pick uses implicit --no-verify). It checks commit messages,
+# C formatting, ruff, and codespell on the commit range being pushed.
+
+git_dir="$(git rev-parse --git-dir 2>/dev/null || true)"
+if [ -n "$git_dir" ]; then
+    hook_target="$git_dir/hooks/pre-push"
+    repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+    # Prefer the in-repo script, fall back to the plugin's bundled copy
+    hook_source="$repo_root/tools/pre-push-check.sh"
+    if [ ! -f "$hook_source" ]; then
+        hook_source="$PLUGIN_ROOT/scripts/pre-push-check.sh"
+    fi
+
+    if [ -f "$hook_source" ] && [ ! -e "$hook_target" ]; then
+        ln -sf "$hook_source" "$hook_target"
+        echo "Installed pre-push hook: $hook_target -> $hook_source"
+    fi
+fi
+
+# --- Step 4: Ensure .claude/ is locally gitignored ---
 
 # Only proceed if we're in a git repo
 if ! git rev-parse --git-dir >/dev/null 2>&1; then

@@ -115,6 +115,35 @@ pre-commit run --files [files...]
 pre-commit install --hook-type pre-commit --hook-type commit-msg
 ```
 
+**Install the pre-push hook (strongly recommended):**
+
+Pre-commit hooks do NOT run during `git rebase` (git uses implicit `--no-verify`
+for cherry-picked commits). This means rebased code bypasses all linting, formatting,
+and commit message checks. The pre-push hook catches these issues before they reach
+the remote.
+
+```bash
+ln -sf ../../tools/pre-push-check.sh .git/hooks/pre-push
+```
+
+For worktrees, git shares hooks from the main repo's `.git/hooks/` directory via
+`core.hooksPath`, so the hook only needs to be installed once in the main repo.
+
+The pre-push hook runs on the commit range being pushed and checks:
+1. Commit message format (`verifygitlog.py`) including Signed-off-by
+2. C code formatting (`codeformat.py`)
+3. Python linting and formatting (`ruff`)
+4. Spelling (`codespell`)
+
+To bypass in emergencies: `git push --no-verify`
+
+**Required host tools for pre-push checks:**
+```bash
+pipx install ruff      # or: pip install --user ruff
+pipx install codespell # or: pip install --user codespell
+# codeformat.py and verifygitlog.py are in-tree (tools/)
+```
+
 **Commit message format (enforced by `tools/verifygitlog.py` via pre-commit):**
 
 Subject line rules:
