@@ -118,6 +118,16 @@ An ephemeral integration branch is used as the PR base instead of master to avoi
 - The `push:` trigger in workflow YAMLs means every push to origin triggers CI; this is fine for a public fork (free Actions minutes) and cancel-in-progress handles churn
 - PR description is part of the review and may be iterated
 
+## Commit History Requirements
+
+MicroPython does not squash-merge PRs. The commit tree submitted is the commit tree that lands on master. Every PR must have a clean, logical commit history ready for rebase or merge.
+
+* **No broad "fixup" commits.** Never address review feedback by adding a catch-all commit like "fix review comments" or "address feedback" at HEAD. Each fix must be folded back into the commit it logically belongs to (via `git rebase -i`, `git commit --fixup` + `git rebase --autosquash`, [`git autosquash`](http://github.com/andrewleech/git-autosquash), or `jj absorb`).
+* **Each commit should be a self-contained, reviewable unit.** A reviewer reading any single commit should see a coherent change, not a partial change that only makes sense after a later fixup.
+* **Force-pushing rewritten history is expected** during review on feature branches. This is normal workflow, not something to avoid.
+* **Commit messages must use imperative mood** and be prefixed with the relevant component, matching the PR title style (e.g. `stm32: Add DMA support for SPI.`).
+* **All commits must include `Signed-off-by`** via `git commit -s`.
+
 ## Working with PRs via gh
 The `gh` tool can be used to interact with Pull Requests:
 * List PRs: `gh pr list`
