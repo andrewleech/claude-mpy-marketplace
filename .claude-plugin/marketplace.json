@@ -47,6 +47,14 @@
       "tags": ["github", "gitlab", "pull-request", "merge-request"]
     },
     {
+      "name": "mpremote",
+      "source": "./plugins/mpremote",
+      "version": "0.1.0",
+      "description": "MicroPython device interaction patterns via mpremote: connecting, file transfer, and persistent PTY sessions",
+      "category": "development",
+      "tags": ["micropython", "mpremote", "embedded", "serial", "device"]
+    },
+    {
       "name": "mpy-reviewer",
       "source": {
         "source": "github",

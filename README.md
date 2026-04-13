@@ -62,6 +62,12 @@ Systematic workflow for maintaining personal open MicroPython PRs. Processes PRs
 
 **Depends on:** mpy-pr-triage, mpy-ci
 
+### mpremote
+
+MicroPython device interaction via mpremote. Three skills covering device connection and management, file transfer, and persistent PTY sessions for asyncio-safe command execution.
+
+**Skill triggers:** Ask about connecting to a device, copying files, running code on a device, monitoring output, persistent sessions.
+
 ### mpy-reviewer *(external)*
 
 MicroPython code review assistant backed by categorized review comments from upstream. Provides RAG-based review guidance and an MCP server for querying the review database.

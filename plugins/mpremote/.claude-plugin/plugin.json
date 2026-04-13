@@ -1,0 +1,10 @@
+{
+  "name": "mpremote",
+  "version": "0.1.0",
+  "description": "MicroPython device interaction patterns via mpremote",
+  "author": {
+    "name": "Andrew Leech",
+    "email": "andrew.leech@planetinnovation.com.au"
+  },
+  "keywords": ["micropython", "mpremote", "embedded", "serial", "device"]
+}
