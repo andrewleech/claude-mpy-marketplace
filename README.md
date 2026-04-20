@@ -5,7 +5,11 @@ Claude Code plugins for MicroPython development workflows.
 ## Installation
 
 ```bash
-claude plugin add https://github.com/andrewleech/claude-mpy-marketplace
+claude plugin marketplace add https://github.com/andrewleech/claude-mpy-marketplace
+claude plugin install mpy-rules@mpy-marketplace
+claude plugin install mpy-reviewer@mpy-marketplace
+claude plugin install draft-pr@mpy-marketplace
+claude plugin install mpremote@mpy-marketplace
 ```
 
 Restart Claude Code after installation.
