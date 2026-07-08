@@ -75,7 +75,7 @@ fi
 # where git cherry-pick uses implicit --no-verify). It checks commit messages,
 # C formatting, ruff, and codespell on the commit range being pushed.
 
-git_dir="$(git rev-parse --git-dir 2>/dev/null || true)"
+git_dir="$(git rev-parse --git-common-dir 2>/dev/null || true)"
 if [ -n "$git_dir" ]; then
     hook_target="$git_dir/hooks/pre-push"
     repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
