@@ -1,0 +1,10 @@
+{
+  "name": "mpbuild",
+  "version": "0.1.0",
+  "description": "Build MicroPython firmware in Docker containers using mpbuild",
+  "author": {
+    "name": "Matthew Trentini",
+    "email": "matt.trentini@gmail.com"
+  },
+  "keywords": ["micropython", "mpbuild", "docker", "build", "firmware"]
+}

@@ -55,6 +55,14 @@
       "tags": ["micropython", "mpremote", "embedded", "serial", "device"]
     },
     {
+      "name": "mpbuild",
+      "source": "./plugins/mpbuild",
+      "version": "0.1.0",
+      "description": "Build MicroPython firmware in Docker containers using mpbuild",
+      "category": "development",
+      "tags": ["micropython", "mpbuild", "docker", "build", "firmware"]
+    },
+    {
       "name": "mpy-reviewer",
       "source": {
         "source": "github",
