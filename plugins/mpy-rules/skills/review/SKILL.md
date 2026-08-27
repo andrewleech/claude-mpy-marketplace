@@ -3,11 +3,11 @@ name: mpy-review
 description: Review MicroPython code changes using domain-focused agents. Invoke when user mentions reviewing code, wants feedback on MicroPython PRs/commits/diffs, or asks for code review.
 ---
 
-**Version:** 2.0.0
+**Version:** 2.1.0
 
 Review MicroPython code changes with parallel domain-focused agents: $ARGUMENTS
 
-Your goal is to perform a multi-dimensional review of MicroPython code changes by launching four parallel review agents (Correctness & Safety, Resource Constraints, API & Portability, Conventions & Completeness), validating their findings to filter noise, then presenting consolidated results.
+Your goal is to perform a multi-dimensional review of MicroPython code changes by launching five parallel review agents (Correctness & Safety, Resource Constraints, API & Portability, Conventions & Completeness, Narrative & Voice), validating their findings to filter noise, then presenting consolidated results.
 
 ## STEP 1: DETECT CONTEXT & GATHER DIFF
 
@@ -87,7 +87,7 @@ Lines:      +<additions> / -<deletions>
 Changed Files:
   <file list with stats>
 
-Launching 4 review agents...
+Launching 5 review agents...
 ```
 
 ## STEP 2: LAUNCH PARALLEL REVIEW AGENTS
@@ -105,12 +105,13 @@ Verify all required prompt files exist:
 - `${PROMPT_DIR}/resource-constraints.md`
 - `${PROMPT_DIR}/api-portability.md`
 - `${PROMPT_DIR}/conventions-completeness.md`
+- `${PROMPT_DIR}/narrative-voice.md`
 
 If any are missing, report an error and stop.
 
-### Launch 4 Agents in Parallel
+### Launch 5 Agents in Parallel
 
-Launch ALL four agents in a SINGLE message using the Agent tool with
+Launch ALL five agents in a SINGLE message using the Agent tool with
 `model='opus'`.
 
 Each agent's prompt has three parts:
@@ -154,11 +155,12 @@ reviewing. Return findings as a JSON array following the schema in
 shared-context.md. End with a 2-3 sentence summary.
 ```
 
-The four agents and their dimension files:
+The five agents and their dimension files:
 - Agent 1: Correctness & Safety -> `correctness-safety.md`
 - Agent 2: Resource Constraints -> `resource-constraints.md`
 - Agent 3: API & Portability -> `api-portability.md`
 - Agent 4: Conventions & Completeness -> `conventions-completeness.md`
+- Agent 5: Narrative & Voice -> `narrative-voice.md`
 
 ### Track Agent Launches
 
@@ -170,15 +172,16 @@ Agent 1: Correctness & Safety    -- launched
 Agent 2: Resource Constraints    -- launched
 Agent 3: API & Portability       -- launched
 Agent 4: Conventions & Complete  -- launched
+Agent 5: Narrative & Voice        -- launched
 
-Waiting for results from 4 agents...
+Waiting for results from 5 agents...
 ```
 
 ## STEP 3: VALIDATE FINDINGS
 
 ### Collect Raw Findings
 
-After all 4 agents return, parse JSON findings from each. If an agent returned
+After all 5 agents return, parse JSON findings from each. If an agent returned
 malformed output, note it and continue with findings from successful agents.
 
 Concatenate all findings into a single list. Each finding should already have
@@ -274,6 +277,9 @@ Write to `/tmp/MPY_REVIEW_<REVIEW_TS>.md`:
 ### Conventions & Completeness
 <Findings from Agent 4>
 
+### Narrative & Voice
+<Findings from Agent 5>
+
 ## Action Items
 - [ ] [blocking] Description -- file:line -- commit: <hash>
 - [ ] [suggestion] Description -- file:line -- commit: <hash>
@@ -286,6 +292,7 @@ Write to `/tmp/MPY_REVIEW_<REVIEW_TS>.md`:
 | Resource Constraints | <N> | <N> | <N> |
 | API & Portability | <N> | <N> | <N> |
 | Conventions & Completeness | <N> | <N> | <N> |
+| Narrative & Voice | <N> | <N> | <N> |
 | **Total** | **<N>** | **<N>** | **<N>** |
 ```
 
@@ -414,7 +421,7 @@ Write plan to `/tmp/MPY_REVIEW_PLAN_<REVIEW_TS>.md`, then call
 
 ### DO:
 - Verify this is a MicroPython repo before proceeding
-- Launch all 4 review agents in parallel in a single tool-call message
+- Launch all 5 review agents in parallel in a single tool-call message
 - Always specify `model='opus'` for all agents
 - Instruct agents to explore existing code before reviewing
 - Require agents to attribute findings to specific commits
@@ -458,7 +465,7 @@ The mpy-rules plugin may need reinstalling.
 
 ### Agent Failure
 ```
-<N>/4 review agents completed successfully.
+<N>/5 review agents completed successfully.
 Agent <name> failed: <reason>
 Proceeding with available findings.
 ```

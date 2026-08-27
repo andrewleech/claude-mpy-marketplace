@@ -1,6 +1,6 @@
 {
   "name": "mpy-rules",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "MicroPython project rules, multi-agent review skill, and documentation style guide for any MicroPython repo",
   "author": {
     "name": "andrewleech"

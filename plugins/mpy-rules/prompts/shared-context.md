@@ -163,7 +163,8 @@ Return findings as a JSON array. Each finding:
 ```
 
 Set `dimension` to your review dimension name: `correctness-safety`,
-`resource-constraints`, `api-portability`, or `conventions-completeness`.
+`resource-constraints`, `api-portability`, `conventions-completeness`, or
+`narrative-voice`.
 
 The `line` field is the new-file line number (the `R` number from annotated
 diffs, or the absolute line number in the post-merge file).
