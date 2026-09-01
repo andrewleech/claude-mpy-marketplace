@@ -5,12 +5,5 @@
   "author": {
     "name": "andrewleech"
   },
-  "keywords": [
-    "github",
-    "gitlab",
-    "pull-request",
-    "merge-request",
-    "pr",
-    "mr"
-  ]
+  "keywords": ["github", "gitlab", "pull-request", "merge-request", "pr", "mr"]
 }
