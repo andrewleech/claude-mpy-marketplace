@@ -1,20 +1,14 @@
 ---
 name: agentic-app-development
 description: >-
-  This skill should be used when starting or continuing agentic development on
-  a real, ongoing software project, as opposed to a one-off task. Covers where
-  process material (research notes, tickets, PR drafts, investigation logs)
-  should live relative to the shipped repository, how to scale planning
-  structure to the size of the work (a couple of ticket files for a minor
-  feature, versus a full phased roadmap for a large or long-running effort),
-  and how to track local patches carried against a vendored or forked
-  dependency until they land upstream. Use when the user says "set up a
-  planning workspace", "how should I organise this project's process
-  material", "this project vendors/forks X and I need to track my patches",
-  "should this be its own git repo", or when a project's `./planning`
-  (or equivalent) folder needs a first pass at structure. Also use when
-  resuming work on a project that already has this structure, to orient
-  before making changes to it.
+  This skill should be used when the user says "set up a planning workspace",
+  "how should I organise this project's process material", "this project
+  vendors/forks X and I need to track my patches", "should the planning
+  workspace be its own git repo", "get me oriented on this project's planning
+  setup", or asks for a first pass at structure for a project's `./planning`
+  (or equivalent) folder. Covers where process material lives relative to the
+  shipped repository, scaling planning structure to the size of the work, and
+  tracking local patches carried against a vendored or forked dependency.
 ---
 
 # Agentic App Development
@@ -22,7 +16,7 @@ description: >-
 A pattern for running agentic development on a project over many sessions:
 where process material lives relative to the code that ships, how much
 planning structure a piece of work actually warrants, and how to track local
-patches against a dependency you vendor or fork until they are proposed and
+patches against a dependency the project vendors or forks until they are proposed and
 merged upstream. This skill states the default and the escalation points; it
 does not replace judgement about a specific project.
 
@@ -84,8 +78,8 @@ Default to the lightest structure that keeps the work traceable, and escalate
 explicitly rather than starting heavy:
 
 - **Minor, well-scoped work**: one or two files under `planning/tickets/` (or
-  directly in `planning/` if there is no `tickets/` yet) is enough. No F/R/Q
-  roadmap machinery, no phases. A short `planning/README.md` still belongs at
+  directly in `planning/` if there is no `tickets/` yet) is enough. No numbered
+  facts/rules/open-questions roadmap machinery, no phases. A short `planning/README.md` still belongs at
   the top, even for this - see below.
 - **Large or long-running work**: open-ended scope, multiple dependency-ordered
   phases, or research that needs to happen before the shape of the work is even
@@ -147,17 +141,10 @@ Track it explicitly instead:
   file"). Do not duplicate that schema here; it lives in `draft-pr` because
   drafting the description is that skill's job regardless of whether the
   result is created immediately or persisted for later.
-- **Raise drafts against your own fork first, targeting the fork's own default
-  branch, never upstream directly.** This gives the project owner a normal
-  review UI to read the diff and description before anything is visible to an
-  upstream maintainer. Moving a draft from the fork to the upstream project is
-  a separate, later, explicitly-requested action.
-- When one piece of work has to be two PRs because it spans two repositories -
-  a core change and the driver/library change that is the only thing that
-  makes it measurable, for instance - give each its own draft file and link
-  them via the `relationship` field `draft-pr`'s schema provides, plus a short
-  index file listing the pairs so the coupling is visible without reading
-  every draft.
+- **Raise drafts against your own fork first, never upstream directly**, and
+  **when work has to be two PRs because it spans two repositories**, link the
+  pair the same way. Both are `draft-pr` conventions, not this skill's; do not
+  restate them here, see "Persisting a draft as a local file" in that skill.
 
 ## Composing with other skills
 
