@@ -9,6 +9,7 @@ claude plugin marketplace add https://github.com/andrewleech/claude-mpy-marketpl
 claude plugin install mpy-rules@mpy-marketplace
 claude plugin install mpy-reviewer@mpy-marketplace
 claude plugin install draft-pr@mpy-marketplace
+claude plugin install agentic-app-development@mpy-marketplace
 claude plugin install mpremote@mpy-marketplace
 ```
 
@@ -65,6 +66,23 @@ Systematic workflow for maintaining personal open MicroPython PRs. Processes PRs
 **Skill trigger:** Ask about PR maintenance, PR backlog, rebasing PRs, working through open PRs.
 
 **Depends on:** mpy-pr-triage, mpy-ci
+
+### agentic-app-development
+
+Planning-workspace structure and upstream-patch tracking for ongoing agentic
+development: where process material lives relative to the shipped repo, three
+git postures for that workspace, scaling structure to the size of the work,
+and tracking local patches against a vendored/forked dependency until they
+land upstream. Vendors `phased-roadmap` as the option for large or
+long-running planning.
+
+**Skill trigger:** Setting up a planning workspace, organising process
+material for an ongoing project, tracking patches against a vendored or
+forked dependency, deciding whether planning material needs its own git repo.
+
+**Works with:** `draft-pr` (owns the local-draft-file frontmatter this plugin
+points at), `investigation-log` (referenced for exploratory phase work, not
+bundled).
 
 ### mpremote
 

@@ -47,6 +47,14 @@
       "tags": ["github", "gitlab", "pull-request", "merge-request"]
     },
     {
+      "name": "agentic-app-development",
+      "source": "./plugins/agentic-app-development",
+      "version": "0.1.0",
+      "description": "Planning-workspace structure and upstream-patch tracking for ongoing agentic development, scaling from a ticket or two to a full phased roadmap",
+      "category": "development",
+      "tags": ["planning", "roadmap", "tickets", "workflow", "upstream", "fork", "submodule"]
+    },
+    {
       "name": "mpremote",
       "source": "./plugins/mpremote",
       "version": "0.1.0",
