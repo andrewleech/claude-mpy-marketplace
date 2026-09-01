@@ -15,6 +15,7 @@ description: >-
   (or equivalent) folder needs a first pass at structure. Also use when
   resuming work on a project that already has this structure, to orient
   before making changes to it.
+---
 
 # Agentic App Development
 
