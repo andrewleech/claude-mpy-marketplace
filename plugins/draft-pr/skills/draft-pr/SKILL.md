@@ -90,6 +90,65 @@ the code and is responsible for the description above.
 
 Show the drafted title and body to the user. On confirmation, create the PR/MR using the appropriate tool (`gh pr create` or `glab mr create`). Do not create without confirmation.
 
+## Persisting a draft as a local file
+
+Most of the time, draft, present, and create happen in one pass and nothing
+is written to disk. Persist the draft as a local markdown file instead when
+the PR cannot be raised yet -- a branch that has to land after a prerequisite,
+one still missing a bench result, or a queue of many such branches across a
+vendored dependency or fork that gets worked through over time rather than in
+one sitting. The signal is the same either way: if the user would lose this
+draft by closing the session before creating the PR, write it down.
+
+Where the file lives is a project decision, not this skill's -- commonly a
+directory such as `pr-drafts/` inside a planning workspace (see this
+marketplace's guidance on planning workspaces for projects that carry one).
+Wherever it lives, use this frontmatter so the file is machine-checkable
+rather than only human-readable, and consistent across projects that persist
+drafts this way:
+
+```yaml
+---
+upstream_repo: owner/repo          # required: what this eventually targets
+upstream_base: master              # required: the branch it is proposed against
+local_branch: feature/thing        # required: the branch name locally
+status: planned                    # required: see lifecycle below
+title: "component: Imperative title."   # required: quoted, matches step 3's rules
+pushed_branch: https://...         # once pushed: URL to the branch on the fork
+fork_pr: https://...               # once raised: URL to the draft PR (see below)
+head: abc123def456                 # once pushed: the commit the description was written against
+relationship: |                    # when relevant: coupling to another branch/PR/repo
+  Multi-line prose. What depends on what, review-order constraints, a
+  companion change that lives in a different repository.
+depends_on: other-branch-name      # when relevant: a prerequisite too simple for `relationship`
+todo:                              # when incomplete: concrete, checkable, not "test more"
+  - What's unverified and why.
+worktree: /path/to/worktree        # when relevant: where this was authored, if that matters for resuming
+---
+```
+
+`status` is free text -- a fixed enum stops fitting the moment a branch's
+situation is unusual -- but track this progression unless there's a specific
+reason to deviate: `planned` (described before the branch exists, typically
+the generalisation of a proof-of-concept that has to land first) -> `ready to
+propose` (branch exists, pushed, description written, no PR yet) -> `draft
+raised on fork for review` -> `draft raised on fork for review, awaiting
+sign-off before upstream` (explicit that raising the upstream PR is a
+separate, later action, not automatic once the draft is clean).
+
+**Raise persisted drafts on the fork first, targeting the fork's own default
+branch, not upstream.** This gives the project owner a normal GitHub/GitLab
+review UI to read the diff and description before anything is visible to an
+upstream maintainer. Moving a draft from the fork to upstream is a deliberate
+later action, not something this skill does on its own -- do not open the
+upstream PR until asked to.
+
+When one piece of work has to be two PRs because it spans two repositories
+(a core change and the driver/library change that makes it measurable, for
+instance), give each its own draft file with `relationship:` pointing at the
+other, and keep a short index file listing the pairs so the coupling is
+visible without reading every draft.
+
 ## Writing for Reviewers
 
 The primary audience is a reviewer who will also be reading the diff. The description's job is to provide what the diff alone cannot:

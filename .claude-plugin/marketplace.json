@@ -12,7 +12,11 @@
       "version": "0.1.0",
       "description": "List, sort, and triage open MicroPython PRs with branch and worktree status",
       "category": "productivity",
-      "tags": ["micropython", "github", "pr-triage"]
+      "tags": [
+        "micropython",
+        "github",
+        "pr-triage"
+      ]
     },
     {
       "name": "mpy-ci",
@@ -20,7 +24,12 @@
       "version": "0.1.0",
       "description": "Run the MicroPython CI pipeline locally using Docker",
       "category": "development",
-      "tags": ["micropython", "ci", "docker", "testing"]
+      "tags": [
+        "micropython",
+        "ci",
+        "docker",
+        "testing"
+      ]
     },
     {
       "name": "mpy-rules",
@@ -28,7 +37,11 @@
       "version": "0.5.0",
       "description": "MicroPython project rules, multi-agent review skill, and documentation style guide for any MicroPython repo",
       "category": "development",
-      "tags": ["micropython", "rules", "project-config"]
+      "tags": [
+        "micropython",
+        "rules",
+        "project-config"
+      ]
     },
     {
       "name": "mpy-pr-maintenance",
@@ -36,15 +49,26 @@
       "version": "0.1.0",
       "description": "Systematic maintenance workflow for open MicroPython PRs: recon, rebase, CI, push",
       "category": "productivity",
-      "tags": ["micropython", "github", "pr-maintenance", "rebase", "worktree"]
+      "tags": [
+        "micropython",
+        "github",
+        "pr-maintenance",
+        "rebase",
+        "worktree"
+      ]
     },
     {
       "name": "draft-pr",
       "source": "./plugins/draft-pr",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Draft GitHub PR and GitLab MR titles and descriptions from git branch changes",
       "category": "productivity",
-      "tags": ["github", "gitlab", "pull-request", "merge-request"]
+      "tags": [
+        "github",
+        "gitlab",
+        "pull-request",
+        "merge-request"
+      ]
     },
     {
       "name": "mpremote",
@@ -52,7 +76,13 @@
       "version": "0.1.0",
       "description": "MicroPython device interaction patterns via mpremote: connecting, file transfer, and persistent PTY sessions",
       "category": "development",
-      "tags": ["micropython", "mpremote", "embedded", "serial", "device"]
+      "tags": [
+        "micropython",
+        "mpremote",
+        "embedded",
+        "serial",
+        "device"
+      ]
     },
     {
       "name": "mpy-reviewer",
@@ -64,7 +94,11 @@
       "version": "0.2.0",
       "description": "MicroPython code review assistant backed by categorized review comments from upstream",
       "category": "development",
-      "tags": ["micropython", "code-review", "rag"]
+      "tags": [
+        "micropython",
+        "code-review",
+        "rag"
+      ]
     },
     {
       "name": "mpy-triage",
@@ -76,7 +110,11 @@
       "version": "0.1.0",
       "description": "MicroPython issue/PR triage - duplicate and related item detection",
       "category": "productivity",
-      "tags": ["micropython", "triage", "duplicate-detection"]
+      "tags": [
+        "micropython",
+        "triage",
+        "duplicate-detection"
+      ]
     }
   ]
 }
