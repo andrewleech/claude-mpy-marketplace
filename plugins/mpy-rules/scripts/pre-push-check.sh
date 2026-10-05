@@ -31,23 +31,23 @@ while read -r local_ref local_sha remote_ref remote_sha; do
         continue
     fi
 
-    if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
-        # New branch — check all commits not on the remote default branch
-        # Try upstream/master first, fall back to origin/main
-        base=$(git merge-base "$local_sha" upstream/master 2>/dev/null \
-            || git merge-base "$local_sha" origin/main 2>/dev/null \
-            || echo "")
-        if [ -z "$base" ]; then
-            echo "pre-push: cannot determine base branch, skipping checks"
-            continue
-        fi
+    # Check only the branch's own commits: those not already in upstream.
+    # Comparing against the old remote tip would also check upstream's own
+    # commits whenever a branch is rebased or a mirror fast-forwarded.
+    base=$(git merge-base "$local_sha" upstream/master 2>/dev/null \
+        || git merge-base "$local_sha" origin/main 2>/dev/null \
+        || echo "")
+    if [ -n "$base" ]; then
         range="${base}..${local_sha}"
-    else
+    elif [ "$remote_sha" != "0000000000000000000000000000000000000000" ]; then
         range="${remote_sha}..${local_sha}"
+    else
+        echo "pre-push: cannot determine base branch, skipping checks"
+        continue
     fi
 
     # Get changed files in this push
-    changed_files=$(git diff --name-only "$range" 2>/dev/null || true)
+    changed_files=$(git diff --name-only --diff-filter=d "$range" 2>/dev/null || true)
     if [ -z "$changed_files" ]; then
         continue
     fi
@@ -57,11 +57,26 @@ while read -r local_ref local_sha remote_ref remote_sha; do
 
     echo "pre-push: checking $(echo "$changed_files" | wc -l) files in $range"
 
+    # Check the pushed commit itself, not whatever the working tree holds:
+    # the pushed ref need not be the one checked out, or even exist on disk.
+    tree=$(mktemp -d)
+    git worktree add --quiet --detach "$tree" "$local_sha" </dev/null
+    trap 'git worktree remove --force "$tree"' EXIT
+    cd "$tree"
+
+    # Run ruff at the version CI pins, so a newer local ruff's extra rules
+    # don't fail code CI accepts. Falls back to the ruff on PATH.
+    RUFF=(ruff)
+    ruff_pin=$(grep -oE 'ruff==[0-9.]+' .github/workflows/ruff.yml 2>/dev/null | head -1 | cut -d= -f3)
+    if [ -n "$ruff_pin" ] && command -v uvx &>/dev/null; then
+        RUFF=(uvx "ruff@$ruff_pin")
+    fi
+
     errors=0
 
     # 1. Commit message format
     echo "  Checking commit messages..."
-    if ! "$REPO_ROOT/tools/verifygitlog.py" -v "$range"; then
+    if ! tools/verifygitlog.py -v "$range"; then
         errors=$((errors + 1))
     fi
 
@@ -71,38 +86,41 @@ while read -r local_ref local_sha remote_ref remote_sha; do
         # codeformat.py -c -v -f checks formatting without modifying files
         # It exits 0 if everything is formatted, non-zero otherwise
         # Run it on the changed C files only
-        if ! echo "$changed_c" | xargs "$REPO_ROOT/tools/codeformat.py" -v -c -f 2>/dev/null; then
+        if ! echo "$changed_c" | xargs tools/codeformat.py -v -c -f 2>/dev/null; then
             echo "  C formatting issues found. Run: tools/codeformat.py -v -c -f"
             errors=$((errors + 1))
         fi
     fi
 
     # 3. Python linting and formatting (only if Python files changed)
-    if [ -n "$changed_py" ]; then
-        if command -v ruff &>/dev/null; then
-            echo "  Checking ruff lint..."
-            if ! echo "$changed_py" | xargs ruff check --quiet 2>/dev/null; then
-                errors=$((errors + 1))
-            fi
-            echo "  Checking ruff format..."
-            if ! echo "$changed_py" | xargs ruff format --check --quiet 2>/dev/null; then
-                echo "  Python formatting issues found. Run: ruff format ."
-                errors=$((errors + 1))
-            fi
-        else
-            echo "  ruff not found, skipping Python checks"
+    if [ -n "$changed_py" ] && ! command -v "${RUFF[0]}" &>/dev/null; then
+        echo "  ruff not found, skipping Python checks"
+    elif [ -n "$changed_py" ]; then
+        echo "  Checking ruff lint (${RUFF[*]})..."
+        if ! echo "$changed_py" | xargs "${RUFF[@]}" check --quiet 2>/dev/null; then
+            errors=$((errors + 1))
+        fi
+        echo "  Checking ruff format..."
+        if ! echo "$changed_py" | xargs "${RUFF[@]}" format --check --quiet 2>/dev/null; then
+            echo "  Python formatting issues found. Run: ruff format ."
+            errors=$((errors + 1))
         fi
     fi
 
-    # 4. Codespell (all changed files)
+    # 4. Codespell, run over the tree as CI does: its pyproject skip list only
+    # applies while walking directories, never to files named on the command line.
     if command -v codespell &>/dev/null; then
         echo "  Checking spelling..."
-        if ! echo "$changed_files" | xargs codespell --quiet-level=2 2>/dev/null; then
+        if ! codespell --quiet-level=2; then
             errors=$((errors + 1))
         fi
     else
         echo "  codespell not found, skipping spelling checks"
     fi
+
+    cd "$REPO_ROOT"
+    git worktree remove --force "$tree"
+    trap - EXIT
 
     if [ "$errors" -gt 0 ]; then
         echo ""
