@@ -11,6 +11,7 @@ claude plugin install mpy-reviewer@mpy-marketplace
 claude plugin install draft-pr@mpy-marketplace
 claude plugin install agentic-app-development@mpy-marketplace
 claude plugin install mpremote@mpy-marketplace
+claude plugin install mpbuild@mpy-marketplace
 ```
 
 Restart Claude Code after installation.
@@ -89,6 +90,14 @@ bundled).
 MicroPython device interaction via mpremote. Three skills covering device connection and management, file transfer, and persistent PTY sessions for asyncio-safe command execution.
 
 **Skill triggers:** Ask about connecting to a device, copying files, running code on a device, monitoring output, persistent sessions.
+
+### mpbuild
+
+Build MicroPython firmware for any board using [mpbuild](https://github.com/micropython/mpbuild), which runs each build in the correct per-port Docker container -- no local toolchain install required.
+
+**Skill trigger:** Ask to build firmware for a board, clean/rebuild, or list available boards.
+
+See [plugins/mpbuild/README.md](plugins/mpbuild/README.md) for details.
 
 ### mpy-reviewer *(external)*
 
