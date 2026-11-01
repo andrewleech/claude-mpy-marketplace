@@ -1,8 +1,10 @@
 # MicroPython Claude Marketplace
 
-Claude Code plugins for MicroPython development workflows.
+Plugins for MicroPython development workflows, for Claude Code and oh-my-pi (omp).
 
 ## Installation
+
+### Claude Code
 
 ```bash
 claude plugin marketplace add https://github.com/andrewleech/claude-mpy-marketplace
@@ -11,9 +13,25 @@ claude plugin install mpy-reviewer@mpy-marketplace
 claude plugin install draft-pr@mpy-marketplace
 claude plugin install agentic-app-development@mpy-marketplace
 claude plugin install mpremote@mpy-marketplace
+claude plugin install mpy-new-hw-project@mpy-marketplace
 ```
 
 Restart Claude Code after installation.
+
+### oh-my-pi (omp)
+
+omp reads the `.claude-plugin/marketplace.json` catalog in this repository, so the plugins install without changes.
+
+```bash
+omp plugin marketplace add andrewleech/claude-mpy-marketplace
+omp plugin install mpy-new-hw-project@mpy-marketplace
+```
+
+Other plugins install the same way, for example `omp plugin install mpremote@mpy-marketplace`. Add `--scope project` to install into the current project (`.omp/plugins`) instead of the user directory.
+
+Inside the omp TUI the equivalents are `/marketplace add andrewleech/claude-mpy-marketplace` and `/marketplace install mpy-new-hw-project@mpy-marketplace`. Run `/reload-plugins` after installing.
+
+Update with `omp plugin marketplace update` and `omp plugin upgrade <plugin>@mpy-marketplace`.
 
 ## Developer Installation
 
@@ -34,6 +52,15 @@ cd claude-mpy-marketplace
 ```
 
 Edits to plugin files take effect on next session -- no reinstall needed.
+
+`install.sh` and `uninstall.sh` are for Claude Code only. For omp, add the local clone as a marketplace:
+
+```bash
+omp plugin marketplace add ~/claude-mpy-marketplace
+omp plugin install mpy-new-hw-project@mpy-marketplace
+```
+
+omp installs a cached copy of each plugin, so edits are not live. After editing, run `omp plugin install --force <plugin>@mpy-marketplace` and `/reload-plugins`.
 
 ## Plugins
 
@@ -89,6 +116,18 @@ bundled).
 MicroPython device interaction via mpremote. Three skills covering device connection and management, file transfer, and persistent PTY sessions for asyncio-safe command execution.
 
 **Skill triggers:** Ask about connecting to a device, copying files, running code on a device, monitoring output, persistent sessions.
+
+### mpy-new-hw-project
+
+Create a new MicroPython firmware project for custom hardware. The agent takes a hardware design (KiCad or Protel/Altium netlist, BOM, pin table, datasheets, or an interview with the user), scaffolds the project from [mpy-app-template](https://github.com/andrewleech/mpy-app-template), retargets a seed board definition from the MicroPython tree to the new board, and generates a `hardware.py` skeleton with tests that run on the unix port using [micropython-mock-machine](https://github.com/planetinnovation/micropython-mock-machine).
+
+Covers the MicroPython ports with board definitions: stm32, rp2, esp32, mimxrt and samd. The plugin carries no pin tables. Pin names and alternate functions come from the MicroPython tree and from the design files and datasheets the user supplies. A deterministic gate checks the package pin to port name mapping against the netlist before any board file is written.
+
+**Slash command:** `/mpy-new-hw-project [design files or description]`
+
+**Skill trigger:** Ask to bring up MicroPython on a custom board, create a board definition or firmware project for a PCB, or generate a board profile from a netlist.
+
+**Needs:** `uv`, `git`, `make`, and docker or podman for firmware builds.
 
 ### mpy-reviewer *(external)*
 
