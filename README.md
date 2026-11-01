@@ -59,22 +59,38 @@ cd claude-mpy-marketplace
 ./uninstall.sh
 ```
 
-Edits to plugin files take effect on next session -- no reinstall needed.
+Edits to plugin files take effect on next session, no reinstall needed.
 
-`install.sh` and `uninstall.sh` are for Claude Code only. For omp, add the local clone as a marketplace:
+`install.sh` and `uninstall.sh` are for Claude Code only. omp and Codex install a cached copy of each plugin, so edits are not live. Add the local clone as a marketplace, then reinstall after each edit:
 
 ```bash
+# oh-my-pi
 omp plugin marketplace add ~/claude-mpy-marketplace
-omp plugin install mpy-new-hw-project@mpy-marketplace
+omp plugin install --force mpy-new-hw-project@mpy-marketplace
+
+# Codex
+codex plugin marketplace add ~/claude-mpy-marketplace
+codex plugin add mpy-new-hw-project@mpy-marketplace
 ```
 
-omp installs a cached copy of each plugin, so edits are not live. After editing, run `omp plugin install --force <plugin>@mpy-marketplace` and `/reload-plugins`.
+In omp run `/reload-plugins` after reinstalling. In Codex start a new session.
+
+## Agent support
+
+All plugins install on Claude Code, omp and Codex. Skills load on all three. Slash commands are `/<command>` on Claude Code, `/<plugin>:<command>` on omp, and skills named `source-command-<command>` on Codex.
+
+| Plugin | Notes |
+|---|---|
+| mpy-rules | Rules arrive by a SessionStart hook on Claude Code and Codex (Codex needs a one-time hook trust), and by an extension on omp. A skill covers the case where the hook does not run. See [plugins/mpy-rules/README.md](plugins/mpy-rules/README.md). |
+| mpy-ci, mpy-pr-triage | Run their bundled scripts on Codex and omp, found relative to the skill. |
+| mpy-pr-maintenance | Launches a subprocess agent. The skill offers Claude Code, omp and Codex launch forms and defaults to the agent that is running it. |
+| mpy-new-hw-project, mpremote, draft-pr, agentic-app-development | Skills only, no agent-specific paths. |
 
 ## Plugins
 
 ### mpy-rules
 
-Automatically loads MicroPython build, style, PR, and architecture guidelines into `.claude/rules/` for any MicroPython repo. Installs via a session-start hook so rules are available without manual setup.
+Loads MicroPython build, style, PR, and architecture guidelines for any MicroPython repo, on Claude Code, Codex and omp. A session-start hook (an extension on omp) delivers them without manual setup.
 
 **Rules provided:** core build/test conventions, architecture overview, PR workflow
 

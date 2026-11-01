@@ -9,7 +9,7 @@
     {
       "name": "mpy-pr-triage",
       "source": "./plugins/mpy-pr-triage",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "List, sort, and triage open MicroPython PRs with branch and worktree status",
       "category": "productivity",
       "tags": ["micropython", "github", "pr-triage"]
@@ -17,7 +17,7 @@
     {
       "name": "mpy-ci",
       "source": "./plugins/mpy-ci",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Run the MicroPython CI pipeline locally using Docker",
       "category": "development",
       "tags": ["micropython", "ci", "docker", "testing"]
@@ -33,7 +33,7 @@
     {
       "name": "mpy-rules",
       "source": "./plugins/mpy-rules",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "description": "MicroPython project rules, multi-agent review skill, and documentation style guide for any MicroPython repo",
       "category": "development",
       "tags": ["micropython", "rules", "project-config"]
@@ -41,7 +41,7 @@
     {
       "name": "mpy-pr-maintenance",
       "source": "./plugins/mpy-pr-maintenance",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Systematic maintenance workflow for open MicroPython PRs: recon, rebase, CI, push",
       "category": "productivity",
       "tags": ["micropython", "github", "pr-maintenance", "rebase", "worktree"]
