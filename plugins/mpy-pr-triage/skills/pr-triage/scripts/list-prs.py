@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.8"
+# dependencies = []
+# ///
 """List open MicroPython PRs with branch names, external feedback, and worktree status.
 
 Usage:

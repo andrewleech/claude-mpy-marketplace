@@ -18,17 +18,17 @@ Display and sort open MicroPython pull requests from GitHub, enriched with local
 
 ### List PRs
 
-Run the bundled script to fetch and display PR data:
+Run the bundled script to fetch and display PR data. `<skill dir>` is the directory that holds this SKILL.md; resolve it to an absolute path first (the skill listing or the header shown when the skill loads gives the path of this file). The script is `<skill dir>/scripts/list-prs.py`.
 
 ```bash
-python3 ${CLAUDE_PLUGIN_ROOT}/skills/pr-triage/scripts/list-prs.py \
+python3 <skill dir>/scripts/list-prs.py \
     --repo micropython/micropython \
     --author andrewleech \
-    --sort feedback \
+    --sort <SORT_MODE> \
     --local-repo /home/corona/micropython
 ```
 
-Available sort modes:
+The sort mode is the word the user typed after the `/mpy-pr-triage` command, or named in the request. If the user gives none, use `feedback`. Available sort modes:
 - `feedback` -- most recent external feedback first (default)
 - `newest` -- most recently created first
 - `oldest` -- oldest first

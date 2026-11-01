@@ -1,6 +1,6 @@
 # Subprocess Prompt Templates
 
-Templates for the `claude -p` subprocess launched in each PR's worktree. Select the appropriate template based on the PR's situation. Replace all `<PLACEHOLDERS>` with actual values.
+Templates for the headless agent subprocess (Claude Code, omp or Codex; see the launch table in SKILL.md) launched in each PR's worktree. Select the appropriate template based on the PR's situation. Replace all `<PLACEHOLDERS>` with actual values.
 
 ## Template 1: Simple Rebase (no reviewer feedback)
 
@@ -134,7 +134,7 @@ Report what commits you created and the build result.
 - Always include the full reviewer feedback text, not a summary. The subprocess cannot access GitHub.
 - Set `<PRIMARY_PORT>` based on the files changed in the PR. If the PR touches `ports/stm32/`, use `stm32`. If it touches core (`py/`, `extmod/`), use `unix`.
 - For PRs touching multiple ports, pick the most affected port for the subprocess build test. Full CI runs in Phase 4 after the subprocess completes.
-- The subprocess has no access to the parent Claude session's context. Everything it needs must be in the prompt.
+- The subprocess has no access to the parent session's context. Everything it needs must be in the prompt.
 - Keep commit messages succinct: `component: Brief description.` on a single line. No multi-line bodies unless genuinely needed.
 
 ## Phase 4: Full Local CI (run by parent session, NOT the subprocess)

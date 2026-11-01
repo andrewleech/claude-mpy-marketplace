@@ -7,7 +7,21 @@ description: Run the MicroPython CI pipeline locally using Docker. This skill sh
 
 Run the full MicroPython CI pipeline locally in Docker, matching what GitHub Actions runs upstream.
 
+## Invocation
+
+The user can start this skill with the `/mpy-ci` command or by asking for CI in plain words. The CI targets are the target names in the user's request (see Available Targets). If the user names no target, use `all-checks`.
+
+If `ci/ci-local.sh` does not exist in the current directory, install it first (see Installation). Then run:
+
+```bash
+./ci/ci-local.sh <TARGETS>
+```
+
+Show the output to the user. If a target fails, show the relevant error output and suggest fixes.
+
 ## Setup
+
+In this file, `<skill dir>` is the directory that holds this SKILL.md. Resolve it to an absolute path before use; the skill listing or the header shown when the skill loads gives the path of this file. The bundled files are `<skill dir>/assets/Dockerfile` and `<skill dir>/scripts/ci-local.sh`.
 
 The skill bundles two files that must be installed into the MicroPython repo:
 
@@ -18,11 +32,11 @@ The skill bundles two files that must be installed into the MicroPython repo:
 
 To install the CI runner into a MicroPython repo:
 
-1. Copy the bundled files into the repo:
+1. Copy the bundled files into the repo (run from the repo root):
    ```bash
    mkdir -p ci/
-   cp <skill_path>/assets/Dockerfile ci/Dockerfile
-   cp <skill_path>/scripts/ci-local.sh ci/ci-local.sh
+   cp <skill dir>/assets/Dockerfile ci/Dockerfile
+   cp <skill dir>/scripts/ci-local.sh ci/ci-local.sh
    chmod +x ci/ci-local.sh
    ```
 

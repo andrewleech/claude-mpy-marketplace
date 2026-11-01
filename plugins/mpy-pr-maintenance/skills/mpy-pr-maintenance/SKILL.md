@@ -7,10 +7,16 @@ description: Systematic workflow for maintaining a backlog of open MicroPython P
 
 Process open PRs on micropython/micropython authored by a specific user, oldest to newest. Each PR goes through: reconnaissance, user discussion, rebase/fix in a worktree subprocess, local CI validation, and push.
 
+## Invocation
+
+The user starts this workflow with the `/mpy-pr-maintenance [PR number]` command or by asking for PR maintenance in plain words. If a PR number is given, process that PR. Otherwise start at the beginning of the backlog (oldest first).
+
+Present each PR's status to the user before taking action. Always wait for user confirmation before a rebase, close, or push.
+
 ## Prerequisites
 
 - `gh` CLI authenticated with access to micropython/micropython
-- The `mpy-ci` plugin installed (provides `ci/ci-local.sh` and `ci/Dockerfile`)
+- The `mpy-ci` plugin installed (its `mpy-ci` skill bundles `scripts/ci-local.sh` and `assets/Dockerfile`)
 - The `mpy-pr-triage` plugin installed (provides PR listing)
 - Docker installed and running (for CI)
 - A MicroPython repo clone as the working directory with `origin` pointing to the user's fork and `upstream` pointing to `micropython/micropython`
@@ -52,7 +58,7 @@ Update `current_pr_index` as PRs are processed. Save after each PR completes.
 
 ## Phase 1: Reconnaissance
 
-For each PR, run 5 parallel Bash calls to gather:
+For each PR, run these 5 queries in parallel (separate parallel tool calls) to gather the data below. If the agent cannot run tool calls in parallel, run them one after another:
 
 1. **PR metadata** -- title, body, labels, draft status, mergeable state:
    ```bash
@@ -115,6 +121,8 @@ For draft PRs, default recommendation is `skip` unless the user says otherwise.
 
 If multiple PRs have no unaddressed reviewer feedback, present them as a batch and offer to launch all of them in parallel (up to 6 concurrent subprocesses). Still present each PR's summary so the user can exclude any.
 
+The subprocesses are separate agent CLI processes started from the shell, not in-session subagents. If the agent cannot run shell commands in the background, or subagents are unavailable, process the PRs one at a time.
+
 ## Phase 3: Rebase and Fix
 
 ### Set up worktree
@@ -127,17 +135,40 @@ git remote add upstream https://github.com/micropython/micropython.git 2>/dev/nu
 git fetch upstream master
 ```
 
-Install CI tooling and project context into the worktree:
+Install project context and CI tooling into the worktree.
+
+`~/CLAUDE_micropython.md` is the user's own MicroPython context file; the path is specific to this user's setup. If it does not exist, skip the two `ln` commands and tell the user. `AGENTS.md` is read by omp and Codex; `CLAUDE.md` is read by Claude Code (omp reads `CLAUDE.md` only when `AGENTS.md` is not in the same directory).
 
 ```bash
-ln -sf ~/CLAUDE_micropython.md ~/mpy/<BRANCH>/CLAUDE.md
+ln -sf ~/CLAUDE_micropython.md ~/mpy/<BRANCH>/AGENTS.md
+ln -sf AGENTS.md ~/mpy/<BRANCH>/CLAUDE.md
+```
+
+The CI runner comes from the `mpy-ci` skill of the `mpy-ci` plugin. Find that skill in the agent's skill listing (on omp, `read skill://mpy-ci`; on other agents load the skill) and note the directory that holds its SKILL.md; call it `<mpy-ci skill dir>`. Then:
+
+```bash
 mkdir -p ~/mpy/<BRANCH>/ci
-cp ${CLAUDE_PLUGIN_ROOT}/../mpy-ci/skills/mpy-ci/scripts/ci-local.sh ~/mpy/<BRANCH>/ci/ci-local.sh
-cp ${CLAUDE_PLUGIN_ROOT}/../mpy-ci/skills/mpy-ci/assets/Dockerfile ~/mpy/<BRANCH>/ci/Dockerfile
+cp <mpy-ci skill dir>/scripts/ci-local.sh ~/mpy/<BRANCH>/ci/ci-local.sh
+cp <mpy-ci skill dir>/assets/Dockerfile ~/mpy/<BRANCH>/ci/Dockerfile
 chmod +x ~/mpy/<BRANCH>/ci/ci-local.sh
 ```
 
-If `${CLAUDE_PLUGIN_ROOT}` is not available, fall back to the CI files in the current repo's `ci/` directory, or ask the user for the path.
+If the `mpy-ci` skill is not available, fall back to the CI files in the current repo's `ci/` directory, or ask the user for the path.
+
+### Choose the subprocess agent
+
+The subprocess agent is the agent CLI that runs the rebase prompt. Default: the same agent that is running this skill. The running agent knows which product it is from its own system prompt. If this is unclear, ask the user. The user can also name a different agent.
+
+| Agent | Launch command (includes the prompt) | Take over by hand |
+|---|---|---|
+| Claude Code | `claude -p --dangerously-skip-permissions "<PROMPT>"` | `cd ~/mpy/<BRANCH> && claude --continue` |
+| omp | `omp -p --yolo --no-session --max-time 30m "<PROMPT>"` | `cd ~/mpy/<BRANCH> && omp` (`--no-session` leaves nothing to resume; start a new session and point it at the log) |
+| Codex | `codex exec --dangerously-bypass-approvals-and-sandbox "<PROMPT>" </dev/null` | `cd ~/mpy/<BRANCH> && codex resume --last` |
+
+Notes:
+- Each approval-bypass flag (`--dangerously-skip-permissions`, `--yolo`, `--dangerously-bypass-approvals-and-sandbox`) is required because non-interactive mode cannot answer permission prompts. Codex also needs it so `git commit` can write the worktree metadata in the main repo's `.git`.
+- Codex needs `</dev/null`. Without it `codex exec` waits for stdin to close.
+- The CLI must be on `PATH` and logged in.
 
 ### Launch subprocess
 
@@ -147,17 +178,16 @@ Build a prompt from the templates in `references/prompt-templates.md`. The promp
 - Instructions to fix code formatting
 - Instructions to build and test
 
-Run:
+Run, with `<LAUNCH>` the launch command of the chosen agent from the table:
 
 ```bash
-cd ~/mpy/<BRANCH> && claude -p --dangerously-skip-permissions "<PROMPT>" 2>&1 | tee /tmp/claude-pr-<NUMBER>.log | tail -30
+cd ~/mpy/<BRANCH> && <LAUNCH> 2>&1 | tee /tmp/pr-<NUMBER>.log | tail -30
 ```
 
 Key points about the subprocess:
-- `--dangerously-skip-permissions` is required because `-p` (pipe/non-interactive mode) cannot approve tool permission prompts
 - The subprocess gets its own context window, which is better for complex rebase/rewrite work
-- If the subprocess fails or needs manual intervention, the user can resume with: `cd ~/mpy/<BRANCH> && claude`
-- The full log is at `/tmp/claude-pr-<NUMBER>.log`
+- If the subprocess fails or needs manual intervention, the user can take over with the command in the last column of the table
+- The full log is at `/tmp/pr-<NUMBER>.log`
 
 ### Verify worktree state after subprocess
 
@@ -210,7 +240,7 @@ cd ~/mpy/<BRANCH> && ./ci/ci-local.sh format codespell ruff <PORT_TARGETS> 2>&1 
 only runs a basic build test — this phase runs the full relevant CI suite.
 
 Run in the background to allow parallel processing of the next PR's recon/discussion,
-but block the push (Phase 5) until results are available.
+but block the push (Phase 5) until results are available. If the agent cannot run background jobs, run it in the foreground.
 
 ### Known flaky tests
 
