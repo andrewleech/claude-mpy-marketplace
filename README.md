@@ -1,37 +1,45 @@
-# MicroPython Claude Marketplace
+# MicroPython Agents Marketplace
 
-Plugins for MicroPython development workflows, for Claude Code and oh-my-pi (omp).
+Plugins for MicroPython development workflows, for coding agents: Claude Code, oh-my-pi (omp) and Codex.
 
 ## Installation
+
+All three agents read the `.claude-plugin/marketplace.json` catalog in this repository, so one marketplace serves all of them. The marketplace name is `mpy-marketplace`.
 
 ### Claude Code
 
 ```bash
 claude plugin marketplace add https://github.com/andrewleech/claude-mpy-marketplace
-claude plugin install mpy-rules@mpy-marketplace
-claude plugin install mpy-reviewer@mpy-marketplace
-claude plugin install draft-pr@mpy-marketplace
-claude plugin install agentic-app-development@mpy-marketplace
-claude plugin install mpremote@mpy-marketplace
 claude plugin install mpy-new-hw-project@mpy-marketplace
 ```
 
-Restart Claude Code after installation.
+Install other plugins the same way, for example `claude plugin install mpremote@mpy-marketplace`. Restart Claude Code after installation.
 
 ### oh-my-pi (omp)
-
-omp reads the `.claude-plugin/marketplace.json` catalog in this repository, so the plugins install without changes.
 
 ```bash
 omp plugin marketplace add andrewleech/claude-mpy-marketplace
 omp plugin install mpy-new-hw-project@mpy-marketplace
 ```
 
-Other plugins install the same way, for example `omp plugin install mpremote@mpy-marketplace`. Add `--scope project` to install into the current project (`.omp/plugins`) instead of the user directory.
+Install other plugins the same way, for example `omp plugin install mpremote@mpy-marketplace`. Add `--scope project` to install into the current project (`.omp/plugins`) instead of the user directory.
 
 Inside the omp TUI the equivalents are `/marketplace add andrewleech/claude-mpy-marketplace` and `/marketplace install mpy-new-hw-project@mpy-marketplace`. Run `/reload-plugins` after installing.
 
 Update with `omp plugin marketplace update` and `omp plugin upgrade <plugin>@mpy-marketplace`.
+
+### Codex
+
+```bash
+codex plugin marketplace add andrewleech/claude-mpy-marketplace
+codex plugin add mpy-new-hw-project@mpy-marketplace
+```
+
+Install other plugins the same way, for example `codex plugin add mpremote@mpy-marketplace`. List the available and installed plugins with `codex plugin list`. Codex installs a copy of each plugin into `~/.codex/plugins/cache/`. Start a new Codex session after installing.
+
+Update with `codex plugin marketplace upgrade mpy-marketplace`, then `codex plugin add` again for each installed plugin.
+
+Codex loads the plugin skills, and turns plugin slash commands into skills. Some plugins use Claude Code hooks or `${CLAUDE_PLUGIN_ROOT}` paths, which may not work in Codex or omp.
 
 ## Developer Installation
 

@@ -4,7 +4,7 @@
   "owner": {
     "name": "andrewleech"
   },
-  "description": "Claude Code plugins for MicroPython development workflows",
+  "description": "Plugins for MicroPython development workflows, for coding agents",
   "plugins": [
     {
       "name": "mpy-pr-triage",
