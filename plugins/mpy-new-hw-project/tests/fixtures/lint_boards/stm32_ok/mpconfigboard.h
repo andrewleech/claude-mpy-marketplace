@@ -1,0 +1,10 @@
+#define MICROPY_HW_BOARD_NAME "LINT"
+#define MICROPY_HW_UART2_TX (pin_A2)
+#define MICROPY_HW_UART2_RX (pin_A3)
+#define MICROPY_HW_UART4_TX (pin_C10)
+#define MICROPY_HW_UART4_RX (pin_C11)
+#define MICROPY_HW_I2C1_SCL (pin_B8)
+#define MICROPY_HW_I2C1_SDA (pin_B9)
+#define MICROPY_HW_SPI3_SCK (pin_B3)
+#define MICROPY_HW_SPI3_MISO (pin_B4)
+#define MICROPY_HW_SPI3_MOSI (pin_B5)

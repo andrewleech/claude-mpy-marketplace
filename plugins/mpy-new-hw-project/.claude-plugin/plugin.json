@@ -1,0 +1,9 @@
+{
+  "name": "mpy-new-hw-project",
+  "version": "0.1.0",
+  "description": "Create a new MicroPython project for custom hardware: reads a hardware design, scaffolds from mpy-app-template, retargets a seed board and generates a hardware.py skeleton",
+  "author": {
+    "name": "andrewleech"
+  },
+  "keywords": ["micropython", "board", "bringup", "pcb", "netlist", "stm32", "rp2", "esp32", "mimxrt", "samd"]
+}

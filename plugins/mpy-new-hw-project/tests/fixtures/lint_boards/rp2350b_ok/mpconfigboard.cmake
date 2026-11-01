@@ -1,0 +1,3 @@
+set(PICO_BOARD "lint3")
+set(PICO_PLATFORM "rp2350")
+set(PICO_NUM_GPIOS 48)
