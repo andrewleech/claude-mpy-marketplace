@@ -94,9 +94,14 @@ Launching 5 review agents...
 
 ### Resolve Prompt Directory
 
+Plugin root: use `${CLAUDE_PLUGIN_ROOT}` if it is an absolute path; otherwise the plugin root is two directories above the directory of this SKILL.md (`<plugin root>/skills/review/SKILL.md`). The prompts, rules and scripts are in `prompts/`, `rules/` and `scripts/` under it.
+
+Resolve to absolute paths. The review agents do not share the working directory of this skill:
+
 ```
-PROMPT_DIR = ${CLAUDE_PLUGIN_ROOT}/prompts
-RULES_DIR = ${CLAUDE_PLUGIN_ROOT}/rules
+PLUGIN_ROOT = <absolute plugin root>
+PROMPT_DIR = <PLUGIN_ROOT>/prompts
+RULES_DIR = <PLUGIN_ROOT>/rules
 ```
 
 Verify all required prompt files exist:
@@ -383,7 +388,7 @@ expected by post-review.py:
 
 Write to temp file and call:
 ```bash
-python3 ${CLAUDE_PLUGIN_ROOT}/scripts/post-review.py \
+python3 <PLUGIN_ROOT>/scripts/post-review.py \
   --repo <owner/name> --pr <number> \
   --findings /tmp/mpy_review_findings_<REVIEW_TS>.json \
   --diff /tmp/mpy_review_diff_<REVIEW_TS>.patch

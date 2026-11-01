@@ -1,4 +1,5 @@
 ---
+description: "MicroPython PR workflow: PR descriptions, GitHub PR guidelines, private review workflow, commit history requirements and gh usage. Read before drafting, reviewing or updating a MicroPython PR."
 ---
 
 # MicroPython PR Workflow

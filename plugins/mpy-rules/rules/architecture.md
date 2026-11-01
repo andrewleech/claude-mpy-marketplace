@@ -1,4 +1,11 @@
 ---
+description: "MicroPython architecture: py/, extmod/, ports/, lib/, shared/ layout and design conventions. Read before editing C code in those directories."
+globs:
+  - "py/**"
+  - "extmod/**"
+  - "ports/**"
+  - "lib/**"
+  - "shared/**"
 paths:
   - "py/**"
   - "extmod/**"

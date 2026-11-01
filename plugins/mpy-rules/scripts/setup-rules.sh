@@ -1,19 +1,97 @@
 #!/usr/bin/env bash
-# Setup MicroPython rules in the current project.
+# Deliver the MicroPython rules to the agent that runs this SessionStart hook.
 #
-# Called by the SessionStart hook. Performs:
+# Claude Code:
 # 1. Copies canonical rule files to ~/.claude/mpy-rules/ (stable location)
 # 2. If current dir is a MicroPython repo, symlinks .claude/rules/ -> ~/.claude/mpy-rules/
-# 3. Ensures .claude/ is locally gitignored
+# 3. Installs the pre-push hook if none exists
+# 4. Ensures .claude/ is locally gitignored
+#
+# Codex (detected by PLUGIN_ROOT and CODEX_HOME both set):
+# In a MicroPython repo, prints rules/core.md plus an index of the other rule
+# files to stdout, which Codex adds to the model context. Writes no files and
+# prints nothing else, also outside a MicroPython repo.
+#
+# The extension in hooks/pre/mpy-rules.ts does the same job for omp.
 #
 # Environment:
-#   CLAUDE_PLUGIN_ROOT - set by Claude Code, points to the plugin directory
+#   CLAUDE_PLUGIN_ROOT - set by Claude Code and Codex, points to the plugin directory
+#   PLUGIN_ROOT, CODEX_HOME - set by Codex only
 
 set -euo pipefail
 
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:?CLAUDE_PLUGIN_ROOT not set}"
-CANONICAL_DIR="$HOME/.claude/mpy-rules"
+# Codex exports PLUGIN_ROOT and CODEX_HOME to hook processes; Claude Code sets neither.
+# Evaluate before PLUGIN_ROOT is reassigned below.
+if [ -n "${PLUGIN_ROOT:-}" ] && [ -n "${CODEX_HOME:-}" ]; then
+    IS_CODEX=1
+else
+    IS_CODEX=0
+fi
+
+is_micropython_repo() {
+    # Check for key MicroPython markers
+    [ -f "py/mpconfig.h" ] || [ -f "py/runtime.h" ] || [ -f "mpy-cross/main.c" ]
+}
+
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-${PLUGIN_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}}"
 SOURCE_DIR="$PLUGIN_ROOT/rules"
+CANONICAL_DIR="$HOME/.claude/mpy-rules"
+
+# --- Codex: print rules to stdout, change nothing ---
+
+# Prints the file without its YAML frontmatter.
+strip_frontmatter() {
+    awk 'NR == 1 && $0 == "---" { fm = 1; next } fm && $0 == "---" { fm = 0; next } !fm' "$1"
+}
+
+# Prints "description<TAB>paths" for a rule file; paths are comma separated.
+rule_meta() {
+    awk '
+        NR == 1 && $0 == "---" { fm = 1; next }
+        fm && $0 == "---" { exit }
+        !fm { next }
+        /^description:/ {
+            sub(/^description:[ \t]*/, "")
+            gsub(/^"|"$/, "")
+            desc = $0
+            inpaths = 0
+            next
+        }
+        /^paths:/ { inpaths = 1; next }
+        inpaths && /^[ \t]*-/ {
+            sub(/^[ \t]*-[ \t]*/, "")
+            gsub(/"/, "")
+            paths = paths (paths == "" ? "" : ", ") $0
+            next
+        }
+        { inpaths = 0 }
+        END { printf "%s\t%s\n", desc, paths }
+    ' "$1"
+}
+
+print_codex_context() {
+    echo "# MicroPython rules (mpy-rules plugin)"
+    strip_frontmatter "$SOURCE_DIR/core.md"
+    echo
+    echo "## Other MicroPython rule files"
+    echo
+    echo "Read a file below in full before you touch the paths it covers."
+    echo
+    local f desc paths
+    for f in "$SOURCE_DIR"/*.md; do
+        [ -f "$f" ] || continue
+        [ "$(basename "$f")" = "core.md" ] && continue
+        IFS=$'\t' read -r desc paths < <(rule_meta "$f")
+        echo "- $f - scope: ${paths:-any MicroPython work} - $desc"
+    done
+}
+
+if [ "$IS_CODEX" = 1 ]; then
+    if is_micropython_repo; then
+        print_codex_context
+    fi
+    exit 0
+fi
 
 # --- Step 1: Copy rule files to stable canonical location ---
 
@@ -36,11 +114,6 @@ if [ "$updated" -gt 0 ]; then
 fi
 
 # --- Step 2: Detect MicroPython repo and create symlinks ---
-
-is_micropython_repo() {
-    # Check for key MicroPython markers
-    [ -f "py/mpconfig.h" ] || [ -f "py/runtime.h" ] || [ -f "mpy-cross/main.c" ]
-}
 
 if ! is_micropython_repo; then
     exit 0

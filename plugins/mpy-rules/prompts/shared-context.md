@@ -14,8 +14,9 @@ three priorities: code quality, small binary size, and runtime efficiency.
 
 ## Before Reviewing
 
-1. Read `.claude/rules/development-patterns.md` (loaded automatically in
-   interactive sessions; provided in your context for bot sessions).
+1. Read `development-patterns.md` from the RULES_DIR given in your task
+   (some agents load it automatically; for others it is provided in your
+   context).
 2. Read `CODECONVENTIONS.md` at the MicroPython repo root.
 3. Explore files adjacent to and imported by the changed files to understand
    existing conventions, naming patterns, and error handling approaches.

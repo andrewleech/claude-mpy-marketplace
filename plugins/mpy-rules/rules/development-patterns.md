@@ -1,4 +1,5 @@
 ---
+description: "MicroPython development pitfalls from past review data: correctness, resource limits, portability, conventions. Read before writing or reviewing code in a MicroPython checkout."
 ---
 
 # MicroPython Development Patterns

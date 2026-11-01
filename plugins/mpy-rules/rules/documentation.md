@@ -1,4 +1,7 @@
 ---
+description: "MicroPython RST documentation style guide for docs/. Read before editing .rst files under docs/."
+globs:
+  - "docs/**/*.rst"
 paths:
   - "docs/**/*.rst"
 ---

@@ -1,4 +1,5 @@
 ---
+description: "MicroPython repo core rules: building, running tests, code formatting, commit messages and code style. Read before building, testing or committing in a MicroPython checkout."
 ---
 
 # MicroPython Core Rules
