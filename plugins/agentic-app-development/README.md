@@ -1,6 +1,6 @@
 # agentic-app-development
 
-Claude Code plugin for running agentic development on an ongoing project:
+Plugin for running agentic development on an ongoing project:
 where process material lives relative to the shipped repo, how much planning
 structure a piece of work actually needs, and how to track local patches
 carried against a vendored or forked dependency until they land upstream.
@@ -42,8 +42,4 @@ tickets, stamped and revalidated for drift at phase entry.
 
 ## Installation
 
-```bash
-claude --plugin-dir ~/claude-mpy-marketplace/plugins/agentic-app-development
-```
-
-Or add to your Claude Code settings.
+Install from the `mpy-marketplace` marketplace. See the [repository README](../../README.md) for Claude Code, oh-my-pi and Codex commands, for example `claude plugin install agentic-app-development@mpy-marketplace`.

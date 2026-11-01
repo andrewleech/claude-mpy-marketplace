@@ -7,7 +7,7 @@ description: This skill MUST be used when drafting GitHub Pull Request or GitLab
 
 Draft titles and descriptions for GitHub Pull Requests and GitLab Merge Requests by reading the actual changes from git, then presenting the draft for user confirmation before creating.
 
-This skill takes precedence unless the current project's CLAUDE.md or equivalent defines its own PR/MR description process.
+This skill takes precedence unless the current project's `AGENTS.md`, `CLAUDE.md` or equivalent defines its own PR/MR description process.
 
 ## Workflow
 
@@ -34,7 +34,7 @@ Read all commits, not just the latest. The description must reflect the entire b
 
 ### 3. Draft the title
 
-Default format (overridable by project CLAUDE.md):
+Default format (overridable by the project's agent instructions file):
 
 ```
 component: Brief imperative description.
@@ -209,7 +209,7 @@ PR/MR descriptions must read as natural human writing. Avoid patterns statistica
 
 ## Project-Specific Overrides
 
-Per-project CLAUDE.md files may override:
+Per-project agent instructions files (`AGENTS.md`, `CLAUDE.md`) may override:
 - Title format (e.g. dropping the `component:` prefix)
 - Template sections (e.g. adding a `## Migration Guide` section)
 - Voice or style (though first-person casual is the default)

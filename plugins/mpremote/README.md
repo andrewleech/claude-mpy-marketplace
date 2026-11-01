@@ -1,6 +1,6 @@
 # mpremote
 
-Claude Code plugin for MicroPython device interaction via mpremote.
+Plugin for MicroPython device interaction via mpremote, for Claude Code, oh-my-pi and Codex.
 
 ## Skills
 
@@ -15,11 +15,7 @@ General mpremote usage: connecting, running code, checking device state, filesys
 
 ## Installation
 
-```bash
-claude --plugin-dir ~/claude-mpy-marketplace/plugins/mpremote
-```
-
-Or add to your Claude Code settings.
+Install from the `mpy-marketplace` marketplace. See the [repository README](../../README.md) for Claude Code, oh-my-pi and Codex commands, for example `claude plugin install mpremote@mpy-marketplace`.
 
 ## Prerequisites
 

@@ -21,7 +21,7 @@ Write the application hardware layer of the project: `device_config.py`, `hardwa
 - `SKILL/references/ports/<PORT>.md`, section "Machine constructors".
 - `PROJECT/src/firmware/application/` (`hardware.py`, `device_config.py`, `device.py`) and `PROJECT/src/firmware/test/` (`test_blink.py`).
 - `PROJECT/pyproject.toml` (ruff and mypy settings).
-- `PROJECT/CLAUDE.md`.
+- `PROJECT/AGENTS.md`.
 
 # Outputs
 

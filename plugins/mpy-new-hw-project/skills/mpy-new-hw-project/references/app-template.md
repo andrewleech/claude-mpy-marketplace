@@ -2,7 +2,7 @@
 
 The template is `https://github.com/andrewleech/mpy-app-template`, a Copier template. A local checkout can sit at `/home/corona/mpy-app-template`. It creates a MicroPython application project: the MicroPython and library submodules, a board definition copied from MicroPython, a frozen application, unit tests that run on the unix port, containerised builds and CI configuration.
 
-Jinja delimiters in the template are `[[ ]]` and `[% %]`. The template carries its own `CLAUDE.md`. Read the generated project's `CLAUDE.md` before you change build files.
+Jinja delimiters in the template are `[[ ]]` and `[% %]`. The template carries its own `AGENTS.md` (`CLAUDE.md` is a symlink to it). Read the generated project's `AGENTS.md` before you change build files.
 
 ## Scaffold
 

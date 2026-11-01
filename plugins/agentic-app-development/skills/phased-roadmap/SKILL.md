@@ -90,7 +90,7 @@ Create (or confirm) two things before researching:
   `YYYYMMDD_<topic>.md` with a header line stating the date and the current HEAD
   commit SHA (`git rev-parse --short=10 HEAD`). This makes every finding
   reproducible against a known tree state.
-- A **context/design-rules document** (e.g. `CLAUDE.local.md` in the working
+- A **context/design-rules document** (e.g. a local `AGENTS.md` or `CLAUDE.local.md` in the working
   dir, or a `planning/00_context.md`). It states the goal, the working design
   rules, and an index of the planning documents. It is the thing loaded into
   future sessions, so keep it current as decisions close. Note the planning
@@ -313,7 +313,7 @@ workflow subagent) will usually NOT have this skill file available. Everything
 needed to action the roadmap and tickets must therefore live inside the planning
 folder itself. Write an index / operating-instructions file at the top of the
 planning folder (e.g. `planning/README.md` or `planning/00_index.md`) - not only
-in a context doc like `CLAUDE.local.md`, which may be untracked and not travel
+in a context doc like `CLAUDE.local.md` or a local `AGENTS.md`, which may be untracked and not travel
 with the repo.
 
 The index file must contain, deliberately duplicating this skill:
@@ -345,7 +345,7 @@ The index file must contain, deliberately duplicating this skill:
 
 Keep the index short and operational; it is a manual, not a report. Update it in
 the same change whenever a convention changes, and have the context doc (e.g.
-CLAUDE.local.md) point at it as the entry point.
+`AGENTS.md` or `CLAUDE.local.md`) point at it as the entry point.
 
 ### Step 6 - Incorporate new direction as it arrives
 
