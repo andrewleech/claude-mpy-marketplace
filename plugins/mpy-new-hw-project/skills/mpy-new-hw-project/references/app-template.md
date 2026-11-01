@@ -131,7 +131,7 @@ Run from the project root. Builds run in the toolchain container unless the shel
 | `make mboot` | stm32 with `use_mboot`: build the bootloader. `make bootloader` is an alias. |
 | `make deploy-dfu` | stm32 with `use_mboot`: flash the application. Flashing is out of scope for this skill. |
 | `make unix-port` | build the unix port |
-| `make tests` | unit tests on the unix port, all modules. With the default `RUN_IN_DOCKER=1` the target runs `make tests` through docker without `test=`, so every module runs. See below for one module. |
+| `make tests` | unit tests on the unix port, all modules. `make tests test=test_hardware` runs one module. |
 | `make run-unix`, `make repl-unix` | run the application or a REPL on unix with the mock hardware |
 | `make checks` | `pre-commit run --all-files`: ruff, mypy, yamllint (runs on the host, needs `uv`) |
 | `make lint`, `make format` | ruff only |
@@ -142,14 +142,7 @@ Run from the project root. Builds run in the toolchain container unless the shel
 
 Firmware output lands in `src/system/build-<BOARD>/`. Build verification for this skill: `make submodules && make system`, `make libs-only`, `make mboot` (stm32 with mboot), `make tests`, `make checks`. Image pulls are large for esp32.
 
-To run one test module, run `make tests` once so that the unix port and the frozen code are built, then call the unix binary directly from the project root:
-
-```bash
-cd src/unix/build/frozen_mpy
-../../../micropython/ports/unix/build-standard/micropython -c 'import unittest_junit; unittest_junit.main("test_hardware")'
-```
-
-`make tests test=test_hardware` runs the one module only with `RUN_IN_DOCKER=0` (or inside the container), which builds with the host toolchain. With the container default, `$(DOCKER_UNIX) make tests` does not receive `test=`, and all modules run.
+To run one test module, use `make tests test=test_hardware`. The value is forwarded into the container.
 
 The generated Makefile exports `MICROPY_MPYCROSS` so the cmake ports use the project's `mpy-cross` and not their own sub-make. It also exports `MICROPY_GIT_TAG` and `MICROPY_GIT_HASH` from `git describe`. Do not change those lines.
 
