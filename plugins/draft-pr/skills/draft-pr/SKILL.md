@@ -7,7 +7,7 @@ description: This skill MUST be used when drafting GitHub Pull Request or GitLab
 
 Draft titles and descriptions for GitHub Pull Requests and GitLab Merge Requests by reading the actual changes from git, then presenting the draft for user confirmation before creating.
 
-This skill takes precedence unless the current project's `AGENTS.md`, `CLAUDE.md` or equivalent defines its own PR/MR description process.
+This skill takes precedence unless the current project's `AGENTS.md`, `CLAUDE.md` or equivalent defines its own PR/MR description process. A PR/MR template in the repository also takes precedence over this skill's body template (see step 4).
 
 ## Workflow
 
@@ -49,7 +49,14 @@ Rules:
 
 ### 4. Draft the body
 
-Use this template:
+First check the repository for its own PR/MR template, from the root of the branch being proposed:
+
+- GitHub: `.github/PULL_REQUEST_TEMPLATE.md`, `.github/pull_request_template.md`, `PULL_REQUEST_TEMPLATE.md`, `docs/PULL_REQUEST_TEMPLATE.md` (any case), or a choice under `.github/PULL_REQUEST_TEMPLATE/`
+- GitLab: `.gitlab/merge_request_templates/` (`Default.md` when there are several)
+
+When the project has a template, use its sections, headings and order, and follow the instructions in its comments (contribution guidelines it links to, such as CONTRIBUTING.md, apply too). Keep its checklist and tick only items that were actually done; leave the others unticked rather than removing them. Do not add this skill's sections to it, except to put a mermaid diagram or trade-offs into the template's nearest matching section when they help the reviewer. The writing guidance below still applies to the text inside the template's sections.
+
+When there is no project template, use this one:
 
 ```markdown
 ### Summary
@@ -178,7 +185,7 @@ The reviewer already has access to the commit log, file list, and full diff in t
 Never include:
 - **File lists** -- the diff viewer shows exactly which files changed
 - **Commit-by-commit summaries** -- the commit log is already visible
-- **Checklists or done-lists** -- no checkbox lists of completed work items
+- **Checklists or done-lists** -- no checkbox lists of completed work items (a project template's own checklist is the exception; see step 4)
 - **Filler or marketing language** -- no "This PR improves...", no self-congratulatory framing
 - **Development narratives** -- no "I started by...", "This uplifts...", "I originally had X then changed to Y"
 - **Restating the title** in the body opening
@@ -211,7 +218,7 @@ PR/MR descriptions must read as natural human writing. Avoid patterns statistica
 
 Per-project agent instructions files (`AGENTS.md`, `CLAUDE.md`) may override:
 - Title format (e.g. dropping the `component:` prefix)
-- Template sections (e.g. adding a `## Migration Guide` section)
+- Template sections (e.g. adding a `## Migration Guide` section; a PR/MR template in the repository overrides the body template as described in step 4)
 - Voice or style (though first-person casual is the default)
 - Which tool to use for creation (`gh` vs `glab` vs other)
 

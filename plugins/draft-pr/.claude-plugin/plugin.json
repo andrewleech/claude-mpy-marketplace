@@ -1,6 +1,6 @@
 {
   "name": "draft-pr",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Draft GitHub PR and GitLab MR titles and descriptions from git branch changes",
   "author": {
     "name": "andrewleech"
